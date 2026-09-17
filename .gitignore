@@ -164,3 +164,4 @@ _legacy-battery-passport/
 # Claude Code MCP server config — carries API keys for local tooling.
 .mcp.json
 .claude/settings.local.json
+.neon
