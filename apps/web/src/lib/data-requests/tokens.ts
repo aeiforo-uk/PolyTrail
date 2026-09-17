@@ -1,6 +1,7 @@
 import 'server-only';
 import { randomToken } from '@/lib/auth/password';
 import { bytesHash } from '@/lib/crypto/canonical';
+import { appUrl } from '@/lib/app-url';
 
 /**
  * Magic-link tokens for the supplier portal.
@@ -68,6 +69,6 @@ export function isTokenExpired(
 
 /** The absolute URL a supplier is sent. */
 export function supplierLink(token: string): string {
-  const base = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000';
+  const base = appUrl();
   return `${base.replace(/\/$/, '')}/s/${token}`;
 }

@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { buildDidDocument, platformDid } from '@/lib/credentials/did';
 import { listIntegrityProviders } from '@/lib/credentials';
+import { appUrl } from '@/lib/app-url';
 
 /**
  * The platform's DID document.
@@ -22,7 +23,7 @@ export const dynamic = 'force-dynamic';
 
 export async function GET() {
   const did = platformDid();
-  const base = (process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000').replace(/\/+$/, '');
+  const base = appUrl();
 
   const document = {
     ...buildDidDocument({

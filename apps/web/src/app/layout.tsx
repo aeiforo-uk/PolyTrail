@@ -5,6 +5,7 @@ import { getLocale, getMessages } from 'next-intl/server';
 import { ThemeProvider } from '@/components/providers/theme-provider';
 import { Toaster } from '@/components/ui/toaster';
 import './globals.css';
+import { appUrl } from '@/lib/app-url';
 
 /**
  * Two families, one job each.
@@ -49,7 +50,7 @@ const instrumentSerif = Instrument_Serif({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'),
+  metadataBase: new URL(appUrl()),
   title: {
     default: 'Polytrail — Digital Product Passports for textiles',
     template: '%s · Polytrail',

@@ -2,6 +2,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 import { buildOpenApiDocument } from '@/lib/export/openapi';
 import { clientKey, rateLimit, rateLimitHeaders } from '@/lib/security/rate-limit';
 import { tooManyRequests } from '@/lib/api/errors';
+import { configuredAppUrl } from '@/lib/app-url';
 
 /**
  * The machine-readable API description.
@@ -21,7 +22,9 @@ export async function GET(req: NextRequest) {
     return tooManyRequests('Slow down and try again shortly.').toResponse(req.nextUrl.pathname);
   }
 
-  const base = process.env.NEXT_PUBLIC_APP_URL ?? req.nextUrl.origin;
+  // The request's own origin is the better default here than localhost: an
+  // OpenAPI document should describe the server that served it.
+  const base = configuredAppUrl() ?? req.nextUrl.origin;
   const document = buildOpenApiDocument(base);
 
   return NextResponse.json(document, {

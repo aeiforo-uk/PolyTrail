@@ -6,6 +6,7 @@ import { invitations, tenants, users } from '@/lib/db/schema';
 import { hashPassword, randomToken } from '@/lib/auth/password';
 import { ROLE_LABELS, type Role } from '@/lib/auth/roles';
 import { sendEmail } from '@/lib/email';
+import { appUrl } from '@/lib/app-url';
 
 /**
  * Workspace invitations.
@@ -274,7 +275,7 @@ export async function acceptInvitation(
 
 /** Absolute URL an invitee follows. Built here so the shape lives in one place. */
 export function invitationLink(token: string): string {
-  const base = (process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000').replace(/\/+$/, '');
+  const base = appUrl();
   return `${base}/invite/${token}`;
 }
 

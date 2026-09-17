@@ -19,6 +19,7 @@ import { sendEmail } from '@/lib/email';
 import { notifyUser } from '@/lib/notifications';
 import { formatDppId, normalizeDppId } from '@/lib/passport/identifier';
 import { appendEvent } from '@/lib/lifecycle/events';
+import { appUrl } from '@/lib/app-url';
 import type { Role } from '@/lib/auth/roles';
 import { buildAcceptanceCredential, buildTransferCredential, sealCredential } from './credential';
 import {
@@ -65,7 +66,7 @@ export function hashAcceptToken(token: string): string {
 }
 
 export function acceptanceLink(token: string): string {
-  const base = (process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000').replace(/\/+$/, '');
+  const base = appUrl();
   return `${base}/t/${token}`;
 }
 
