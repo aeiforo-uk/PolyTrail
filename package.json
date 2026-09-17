@@ -1,0 +1,33 @@
+{
+  "name": "polytrail",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Polytrail — Digital Product Passports for textiles and apparel.",
+  "engines": {
+    "node": ">=22.0.0",
+    "pnpm": ">=10"
+  },
+  "packageManager": "pnpm@11.0.4",
+  "scripts": {
+    "dev": "pnpm --filter @polytrail/web dev",
+    "build": "pnpm --filter @polytrail/web build",
+    "start": "pnpm --filter @polytrail/web start",
+    "lint": "pnpm --filter @polytrail/web lint",
+    "typecheck": "pnpm --filter @polytrail/web typecheck",
+    "test": "pnpm --filter @polytrail/web test",
+    "db:up": "docker compose up -d postgres",
+    "db:down": "docker compose stop postgres",
+    "db:migrate": "pnpm --filter @polytrail/web db:migrate",
+    "db:seed": "pnpm --filter @polytrail/web db:seed",
+    "setup": "pnpm install && pnpm db:up && pnpm db:migrate && pnpm db:seed"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@parcel/watcher",
+      "@swc/core",
+      "esbuild",
+      "sharp",
+      "unrs-resolver"
+    ]
+  }
+}

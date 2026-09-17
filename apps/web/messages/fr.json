@@ -1,0 +1,41 @@
+{
+  "common": {
+    "appName": "Polytrail",
+    "signIn": "Se connecter",
+    "signOut": "Se déconnecter",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "search": "Rechercher",
+    "loading": "Chargement",
+    "notFound": "Introuvable",
+    "madeIn": "Fabriqué en",
+    "readMore": "En savoir plus"
+  },
+  "passport": {
+    "eyebrow": "Passeport produit",
+    "composition": "Sa composition",
+    "journey": "Où il a été fabriqué",
+    "components": "Composants et fournitures",
+    "care": "Entretien et réparation",
+    "footprint": "Empreinte environnementale",
+    "durability": "Durabilité",
+    "circularity": "Fin de vie",
+    "social": "Celles et ceux qui l'ont fabriqué",
+    "provenance": "Provenance et authenticité",
+    "keepGoing": "Prolonger sa vie",
+    "keepGoingLead": "Ce qui peut arriver de mieux à un vêtement, c'est d'être porté une fois de plus.",
+    "responsible": "Qui en est responsable",
+    "notMapped": "Pas encore tracé par la marque",
+    "notPublished": "{section} n'a pas encore été publié pour ce produit.",
+    "withheld": "{count, plural, one {# champ supplémentaire est enregistré} other {# champs supplémentaires sont enregistrés}} dans ce passeport et réservés aux lecteurs autorisés — réparateurs, recycleurs et autorités de surveillance du marché. Rien n'a été supprimé ; l'accès est gradué.",
+    "version": "Passeport version {version}, publié le {date}.",
+    "machineReadable": "Version lisible par machine",
+    "reportError": "Signaler une erreur dans ce passeport",
+    "recalled": "Ce produit fait l'objet d'un rappel",
+    "suspended": "Ce passeport est suspendu",
+    "carbonFootprint": "Empreinte carbone",
+    "waterUsed": "Eau consommée",
+    "stepsVerified": "Étapes de production vérifiées",
+    "recycledContent": "Matière recyclée"
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "common": {
+    "appName": "Polytrail",
+    "signIn": "Iniciar sesión",
+    "signOut": "Cerrar sesión",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "search": "Buscar",
+    "loading": "Cargando",
+    "notFound": "No encontrado",
+    "madeIn": "Fabricado en",
+    "readMore": "Saber más"
+  },
+  "passport": {
+    "eyebrow": "Pasaporte del producto",
+    "composition": "De qué está hecho",
+    "journey": "Dónde se fabricó",
+    "components": "Componentes y avíos",
+    "care": "Cuidado y reparación",
+    "footprint": "Huella ambiental",
+    "durability": "Durabilidad",
+    "circularity": "Fin de vida",
+    "social": "Quiénes lo hicieron",
+    "provenance": "Procedencia y autenticidad",
+    "keepGoing": "Alarga su vida",
+    "keepGoingLead": "Lo más útil que le puede pasar a una prenda es que se vuelva a llevar.",
+    "responsible": "Quién es responsable",
+    "notMapped": "La marca aún no lo ha trazado",
+    "notPublished": "{section} aún no se ha publicado para este producto.",
+    "withheld": "{count, plural, one {# campo más está registrado} other {# campos más están registrados}} en este pasaporte y solo se facilitan a lectores autorizados — reparadores, recicladores y autoridades de vigilancia del mercado. No se ha borrado nada; el acceso está graduado.",
+    "version": "Pasaporte versión {version}, publicado el {date}.",
+    "machineReadable": "Versión legible por máquina",
+    "reportError": "Informar de un error en este pasaporte",
+    "recalled": "Este producto ha sido retirado",
+    "suspended": "Este pasaporte está suspendido",
+    "carbonFootprint": "Huella de carbono",
+    "waterUsed": "Agua consumida",
+    "stepsVerified": "Etapas de producción verificadas",
+    "recycledContent": "Contenido reciclado"
+  }
+}

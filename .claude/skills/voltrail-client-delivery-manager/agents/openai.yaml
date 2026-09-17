@@ -1,0 +1,4 @@
+interface:
+  display_name: "VolTrail Client Delivery Manager"
+  short_description: "Client readiness and delivery owner"
+  default_prompt: "Use $voltrail-client-delivery-manager to prepare VolTrail for client delivery and handoff."

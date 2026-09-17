@@ -1,0 +1,41 @@
+{
+  "common": {
+    "appName": "Polytrail",
+    "signIn": "Inloggen",
+    "signOut": "Uitloggen",
+    "save": "Opslaan",
+    "cancel": "Annuleren",
+    "search": "Zoeken",
+    "loading": "Laden",
+    "notFound": "Niet gevonden",
+    "madeIn": "Gemaakt in",
+    "readMore": "Meer lezen"
+  },
+  "passport": {
+    "eyebrow": "Productpaspoort",
+    "composition": "Waar het van gemaakt is",
+    "journey": "Waar het gemaakt is",
+    "components": "Onderdelen en fournituren",
+    "care": "Onderhoud en reparatie",
+    "footprint": "Milieuvoetafdruk",
+    "durability": "Duurzaamheid",
+    "circularity": "Einde levensduur",
+    "social": "Wie het gemaakt heeft",
+    "provenance": "Herkomst en echtheid",
+    "keepGoing": "Blijf het dragen",
+    "keepGoingLead": "Het nuttigste wat een kledingstuk kan overkomen, is nog een keer gedragen worden.",
+    "responsible": "Wie verantwoordelijk is",
+    "notMapped": "Nog niet in kaart gebracht door het merk",
+    "notPublished": "{section} is nog niet gepubliceerd voor dit product.",
+    "withheld": "{count, plural, one {# extra veld is} other {# extra velden zijn}} vastgelegd in dit paspoort en alleen beschikbaar voor bevoegde lezers — reparateurs, recyclers en markttoezichthouders. Er is niets verwijderd; de toegang is getrapt.",
+    "version": "Paspoortversie {version}, gepubliceerd op {date}.",
+    "machineReadable": "Machineleesbare versie",
+    "reportError": "Een fout in dit paspoort melden",
+    "recalled": "Dit product is teruggeroepen",
+    "suspended": "Dit paspoort is opgeschort",
+    "carbonFootprint": "CO₂-voetafdruk",
+    "waterUsed": "Waterverbruik",
+    "stepsVerified": "Geverifieerde productiestappen",
+    "recycledContent": "Gerecycled aandeel"
+  }
+}

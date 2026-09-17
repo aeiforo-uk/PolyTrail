@@ -1,0 +1,4 @@
+interface:
+  display_name: "VolTrail Automation Architect"
+  short_description: "Automation and orchestration specialist"
+  default_prompt: "Use $voltrail-automation-architect to design or audit VolTrail automation and operational workflows."

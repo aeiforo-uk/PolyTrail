@@ -1,0 +1,4 @@
+interface:
+  display_name: "VolTrail Solution Architect"
+  short_description: "Architecture and compliance lead"
+  default_prompt: "Use $voltrail-solution-architect to design a production-grade VolTrail platform change."

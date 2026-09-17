@@ -1,0 +1,4 @@
+interface:
+  display_name: "VolTrail Ground Reality Critic"
+  short_description: "Final reality-check product critic"
+  default_prompt: "Use $voltrail-ground-reality-critic to judge whether a VolTrail change would survive real customer and regulator scrutiny."

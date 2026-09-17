@@ -1,0 +1,41 @@
+{
+  "common": {
+    "appName": "Polytrail",
+    "signIn": "Anmelden",
+    "signOut": "Abmelden",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "search": "Suchen",
+    "loading": "Wird geladen",
+    "notFound": "Nicht gefunden",
+    "madeIn": "Hergestellt in",
+    "readMore": "Mehr erfahren"
+  },
+  "passport": {
+    "eyebrow": "Produktpass",
+    "composition": "Woraus es besteht",
+    "journey": "Wo es hergestellt wurde",
+    "components": "Bestandteile und Zutaten",
+    "care": "Pflege und Reparatur",
+    "footprint": "Umweltbilanz",
+    "durability": "Haltbarkeit",
+    "circularity": "Lebensende",
+    "social": "Wer es hergestellt hat",
+    "provenance": "Herkunft und Echtheit",
+    "keepGoing": "Weiter tragen",
+    "keepGoingLead": "Das Nützlichste, was einem Kleidungsstück passieren kann, ist ein weiteres Tragen.",
+    "responsible": "Wer verantwortlich ist",
+    "notMapped": "Von der Marke noch nicht erfasst",
+    "notPublished": "{section} wurde für dieses Produkt noch nicht veröffentlicht.",
+    "withheld": "{count, plural, one {# weiteres Feld ist} other {# weitere Felder sind}} in diesem Pass erfasst und nur für berechtigte Stellen zugänglich — Reparaturbetriebe, Recycler und Marktüberwachungsbehörden. Nichts wurde gelöscht; der Zugriff ist abgestuft.",
+    "version": "Passversion {version}, veröffentlicht am {date}.",
+    "machineReadable": "Maschinenlesbare Fassung",
+    "reportError": "Fehler in diesem Pass melden",
+    "recalled": "Dieses Produkt wurde zurückgerufen",
+    "suspended": "Dieser Pass ist ausgesetzt",
+    "carbonFootprint": "CO₂-Fußabdruck",
+    "waterUsed": "Wasserverbrauch",
+    "stepsVerified": "Nachgewiesene Produktionsschritte",
+    "recycledContent": "Rezyklatanteil"
+  }
+}

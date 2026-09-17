@@ -1,0 +1,10 @@
+export { API_SCOPES, SCOPE_LABELS, SCOPE_DESCRIPTIONS, hasScopes, isApiScope } from './scopes';
+export type { ApiScope } from './scopes';
+export { KEY_PREFIX, mintApiKey, fingerprint, looksLikeApiKey } from './mint';
+export { authenticateApiKey, requireScopes, requireActor } from './authenticate';
+export type { ApiPrincipal } from './authenticate';
+export { withApiKey, apiJson } from './handler';
+export type { ApiV1Context, ApiV1Options } from './handler';
+export { actingSession } from './acting-session';
+export { createApiKey, listApiKeys, revokeApiKey } from './service';
+export type { ApiKeySummary, CreateApiKeyInput } from './service';

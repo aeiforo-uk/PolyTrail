@@ -1,0 +1,41 @@
+{
+  "common": {
+    "appName": "Polytrail",
+    "signIn": "Accedi",
+    "signOut": "Esci",
+    "save": "Salva",
+    "cancel": "Annulla",
+    "search": "Cerca",
+    "loading": "Caricamento",
+    "notFound": "Non trovato",
+    "madeIn": "Fabbricato in",
+    "readMore": "Scopri di più"
+  },
+  "passport": {
+    "eyebrow": "Passaporto del prodotto",
+    "composition": "Di cosa è fatto",
+    "journey": "Dove è stato prodotto",
+    "components": "Componenti e accessori",
+    "care": "Cura e riparazione",
+    "footprint": "Impronta ambientale",
+    "durability": "Durabilità",
+    "circularity": "Fine vita",
+    "social": "Chi lo ha realizzato",
+    "provenance": "Provenienza e autenticità",
+    "keepGoing": "Continua a usarlo",
+    "keepGoingLead": "La cosa più utile che possa accadere a un capo è essere indossato ancora.",
+    "responsible": "Chi ne è responsabile",
+    "notMapped": "Non ancora tracciato dal marchio",
+    "notPublished": "{section} non è ancora stato pubblicato per questo prodotto.",
+    "withheld": "{count, plural, one {# ulteriore campo è registrato} other {# ulteriori campi sono registrati}} in questo passaporto e accessibili solo a soggetti autorizzati — riparatori, riciclatori e autorità di vigilanza del mercato. Nulla è stato cancellato; l'accesso è graduato.",
+    "version": "Passaporto versione {version}, pubblicato il {date}.",
+    "machineReadable": "Versione leggibile da macchina",
+    "reportError": "Segnala un errore in questo passaporto",
+    "recalled": "Questo prodotto è stato richiamato",
+    "suspended": "Questo passaporto è sospeso",
+    "carbonFootprint": "Impronta di carbonio",
+    "waterUsed": "Acqua consumata",
+    "stepsVerified": "Fasi di produzione verificate",
+    "recycledContent": "Contenuto riciclato"
+  }
+}

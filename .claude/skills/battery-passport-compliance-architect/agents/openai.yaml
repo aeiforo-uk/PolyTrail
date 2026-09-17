@@ -1,0 +1,4 @@
+interface:
+  display_name: "Battery Passport Architect"
+  short_description: "Audit battery passport compliance and platform design"
+  default_prompt: "Use $battery-passport-compliance-architect to audit a battery passport solution against EU regulation, standards, provider controls, APIs, and lifecycle roles."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "VolTrail Cloud DevOps Architect"
+  short_description: "Platform, CI/CD, cloud, IaC lead"
+  default_prompt: "Use $voltrail-cloud-devops-architect to audit or design VolTrail cloud and CI/CD changes."

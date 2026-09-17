@@ -1,0 +1,4 @@
+interface:
+  display_name: "VolTrail Workflow Manager"
+  short_description: "Business workflow and role-flow lead"
+  default_prompt: "Use $voltrail-workflow-manager to evaluate or redesign a VolTrail workflow end to end."

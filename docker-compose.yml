@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: polytrail-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: polytrail
+      POSTGRES_PASSWORD: polytrail
+      POSTGRES_DB: polytrail
+    ports:
+      - '5434:5432'
+    volumes:
+      - polytrail-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U polytrail -d polytrail']
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+volumes:
+  polytrail-pgdata:

@@ -1,0 +1,41 @@
+{
+  "common": {
+    "appName": "Polytrail",
+    "signIn": "Sign in",
+    "signOut": "Sign out",
+    "save": "Save",
+    "cancel": "Cancel",
+    "search": "Search",
+    "loading": "Loading",
+    "notFound": "Not found",
+    "madeIn": "Made in",
+    "readMore": "Read more"
+  },
+  "passport": {
+    "eyebrow": "Product passport",
+    "composition": "What it's made of",
+    "journey": "Where it was made",
+    "components": "Components and trims",
+    "care": "Care and repair",
+    "footprint": "Environmental footprint",
+    "durability": "Durability",
+    "circularity": "End of life",
+    "social": "People who made it",
+    "provenance": "Provenance and authenticity",
+    "keepGoing": "Keep it going",
+    "keepGoingLead": "The most useful thing that can happen to a garment is another wearing.",
+    "responsible": "Who is responsible",
+    "notMapped": "Not yet mapped by the brand",
+    "notPublished": "{section} has not been published for this product yet.",
+    "withheld": "{count, plural, one {# further field is} other {# further fields are}} recorded in this passport and released only to authorised readers — repair partners, recyclers and market-surveillance authorities. Nothing has been deleted; it is scoped.",
+    "version": "Passport version {version}, published {date}.",
+    "machineReadable": "Machine-readable version",
+    "reportError": "Report an error in this passport",
+    "recalled": "This product has been recalled",
+    "suspended": "This passport is suspended",
+    "carbonFootprint": "Carbon footprint",
+    "waterUsed": "Water used",
+    "stepsVerified": "Production steps verified",
+    "recycledContent": "Recycled content"
+  }
+}

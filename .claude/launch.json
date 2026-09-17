@@ -1,0 +1,26 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "frontend",
+      "runtimeExecutable": "bash",
+      "runtimeArgs": ["-c", "ulimit -n 65536 2>/dev/null || ulimit -n 10240 2>/dev/null || true; cd /Users/roshandhanashekeran/VolTrail-Prod/frontend && PATH=/opt/homebrew/bin:/usr/local/bin:$PATH npm run dev"],
+      "port": 3000,
+      "autoPort": true
+    },
+    {
+      "name": "frontend-prod",
+      "runtimeExecutable": "bash",
+      "runtimeArgs": ["-c", "ulimit -n 200000 2>/dev/null || true; cd /Users/roshandhanashekeran/VolTrail-Prod/frontend && PATH=/opt/homebrew/bin:/usr/local/bin:$PATH NODE_OPTIONS=--max-old-space-size=4096 npx next start -p 3000"],
+      "port": 3000,
+      "autoPort": false
+    },
+    {
+      "name": "frontend-standalone",
+      "runtimeExecutable": "bash",
+      "runtimeArgs": ["-c", "ulimit -n 200000 2>/dev/null || true; cd /Users/roshandhanashekeran/VolTrail-Prod/frontend && cp -R .next/static .next/standalone/.next/static 2>/dev/null; cp -R public .next/standalone/public 2>/dev/null; set -a; source .env.local 2>/dev/null; set +a; cd .next/standalone && PATH=/opt/homebrew/bin:/usr/local/bin:$PATH PORT=3000 HOSTNAME=127.0.0.1 NODE_OPTIONS=--max-old-space-size=4096 node server.js"],
+      "port": 3000,
+      "autoPort": false
+    }
+  ]
+}

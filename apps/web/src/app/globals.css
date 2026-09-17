@@ -1,0 +1,1507 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Polytrail design tokens
+
+   The chrome is neutral and the brand is rationed. Greys carry essentially no
+   chroma, so the interface reads as an instrument rather than as a mood: the
+   earlier warm-cream canvas tinted every surface, and a screen where the
+   background has an opinion makes the data look like decoration.
+
+   Exactly one saturated accent — madder, the oldest red dye in the textile
+   trade — kept for the primary action, links, and the brand mark. It should
+   never cover more than a few percent of a screen. Saturated colour is
+   otherwise reserved for data and for state.
+
+   Every value is OKLCH so that light and dark stay perceptually matched
+   rather than one being a washed-out inversion of the other.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@theme {
+  /* ── Canvas & surfaces ───────────────────────────────────────────────────
+     Near-zero chroma. White cards on a light grey canvas is the arrangement
+     every dense operational tool converges on, because the card edge does the
+     grouping and the grey does the recession — no shadow required. ── */
+  --color-canvas: oklch(98.4% 0.0018 265);
+  --color-surface: oklch(100% 0 0);
+  --color-surface-sunken: oklch(96.9% 0.0022 265);
+  --color-surface-raised: oklch(100% 0 0);
+  --color-overlay: oklch(20% 0.008 265 / 0.4);
+
+  /* ── Ink ─────────────────────────────────────────────────────────────────
+     Deeper than the first cut. Headings and figures at 16.5% read as printed
+     rather than rendered — the half-step of extra contrast is most of what
+     separates an instrument from a mockup — and the two quieter steps came
+     down with it so the hierarchy keeps its ratios. All three clear AA with
+     room to spare. ── */
+  --color-ink: oklch(16.5% 0.005 265);
+  --color-ink-muted: oklch(44.5% 0.007 265);
+  --color-ink-subtle: oklch(58.5% 0.006 265);
+  --color-ink-inverse: oklch(99% 0 0);
+
+  /* ── Lines ───────────────────────────────────────────────────────────────
+     Darker than a first instinct suggests. On a white surface a 92% border
+     disappears at arm's length and every card melts into the canvas; at 90%
+     the box is drawn and the layout reads as composed. Strong and hover
+     stepped down with it to keep the three-step ladder. ── */
+  --color-line: oklch(90% 0.003 265);
+  --color-line-strong: oklch(82.5% 0.004 265);
+  --color-line-hover: oklch(74% 0.005 265);
+
+  /* ── The chrome ground ───────────────────────────────────────────────────
+     This product has two grounds, not two themes.
+
+     **Content** follows the theme — white under a light setting, near-black
+     under a dark one. It holds the record being worked on.
+
+     **Chrome** is always dark, in *both* themes. It holds navigation, and
+     anything else whose job is to frame rather than to contain.
+
+     That is a stronger position than the usual "inverse surface" role, which
+     is defined relative to whatever the current theme happens to be and
+     therefore says nothing about what a surface is *for*. Chrome-versus-
+     content is semantic: the eye reads two grounds, so nothing in the
+     navigation competes with the record, and the line between tool and
+     document is drawn without a single divider. In dark mode chrome sits
+     *below* the canvas rather than above it, so the two still separate when
+     everything is dark.
+
+     The values below are not invented. They are the answers the dark theme
+     already worked out for "what does ink, a border, an accent, a positive
+     state look like on a dark ground", promoted so they are available in both
+     themes. One set of decisions, used twice.
+
+     Scale roles follow Radix Colors' discipline — every step names the job it
+     does rather than the lightness it happens to be, which is what makes a
+     light and a dark ramp map onto each other at all:
+
+       ground        the base, equivalent to `canvas`
+       raised        a component sitting on it — a hovered row, a pressed pill
+       line          separators; `line-strong` for a border that must be seen
+       ink           1:1 with the content scale's three weights of text
+       accent        the action colour, lifted so it survives a dark ground
+       positive…     state, lifted likewise; state never goes unlifted here  ── */
+  --color-chrome: oklch(20.5% 0.009 265);
+  --color-chrome-raised: oklch(26.5% 0.011 265);
+  --color-chrome-line: oklch(30% 0.011 265);
+  --color-chrome-line-strong: oklch(38% 0.012 265);
+  --color-chrome-ink: oklch(96.5% 0.003 265);
+  --color-chrome-ink-muted: oklch(73% 0.007 265);
+  /* 61%, not the 58% this scale was drawn at. Measured rather than eyeballed:
+     58% gives 4.18:1 against the chrome ground, which fails AA for body text —
+     and subtle is exactly the weight that carries timestamps and units, so it
+     was failing on the smallest type in the product. 61% clears 4.5:1 on both
+     the light-theme and the dark-theme chrome ground with margin to spare. */
+  --color-chrome-ink-subtle: oklch(61% 0.008 265);
+  --color-chrome-accent: var(--color-madder-400);
+  --color-chrome-accent-hover: var(--color-madder-300);
+  --color-chrome-accent-soft: oklch(31.5% 0.062 36);
+  --color-chrome-on-accent: oklch(16% 0.02 36);
+  --color-chrome-accent-border: oklch(41% 0.095 36);
+  /* Each state carries its ground and its border as well as its ink. A badge
+     asks for all three, and mapping only the ink leaves a pale mint pill —
+     mixed for white — sitting on a near-black panel. */
+  --color-chrome-positive: oklch(74% 0.12 155);
+  --color-chrome-positive-soft: oklch(31.5% 0.052 155);
+  --color-chrome-positive-border: oklch(41% 0.076 155);
+  --color-chrome-caution: oklch(80% 0.12 82);
+  --color-chrome-caution-soft: oklch(32.5% 0.056 82);
+  --color-chrome-caution-border: oklch(42.5% 0.08 82);
+  --color-chrome-critical: oklch(70% 0.15 27);
+  --color-chrome-critical-soft: oklch(32% 0.062 27);
+  --color-chrome-critical-border: oklch(42.5% 0.095 27);
+  --color-chrome-info: oklch(72% 0.11 255);
+  --color-chrome-info-soft: oklch(32% 0.056 255);
+  --color-chrome-info-border: oklch(42.5% 0.086 255);
+
+  /* `rail-*` is what this scale was called when it belonged to one component.
+     Kept as aliases so the existing shell keeps compiling; new work names the
+     ground, not the component that happens to sit on it. */
+  --color-rail: var(--color-chrome);
+  --color-rail-raised: var(--color-chrome-raised);
+  --color-rail-line: var(--color-chrome-line);
+  --color-rail-ink: var(--color-chrome-ink);
+  --color-rail-ink-muted: var(--color-chrome-ink-muted);
+  --color-rail-ink-subtle: var(--color-chrome-ink-subtle);
+
+  /* ── Madder — the editorial accent ──────────────────────────────────────
+     Warm ground, near-black ink, and exactly one saturated accent. Blue would
+     read as generic software and green as greenwash; madder is the oldest red
+     dye in the textile trade and it sits on warm paper without fighting it.
+     The accent is rationed — it should never cover more than a few percent of
+     any screen, so that when it appears it means "act here". ─────────────── */
+  --color-madder-50: oklch(97% 0.014 45);
+  --color-madder-100: oklch(94% 0.032 45);
+  --color-madder-200: oklch(88% 0.062 42);
+  --color-madder-300: oklch(79% 0.1 40);
+  --color-madder-400: oklch(68% 0.145 38);
+  --color-madder-500: oklch(58% 0.166 36);
+  --color-madder-600: oklch(51% 0.164 34);
+  --color-madder-700: oklch(43% 0.142 33);
+  --color-madder-800: oklch(36% 0.115 32);
+  --color-madder-900: oklch(29% 0.088 32);
+
+  /* madder-700, not -600. The lighter step read as terracotta on a warm
+     canvas; a deeper one reads as a considered brand colour and clears 7:1
+     against white, so a link needs no underline to be legible. */
+  --color-accent: var(--color-madder-700);
+  --color-accent-hover: var(--color-madder-800);
+  --color-accent-soft: var(--color-madder-50);
+  --color-accent-border: var(--color-madder-200);
+  --color-on-accent: oklch(99% 0.004 45);
+
+  /* ── Woad — a cool counterpoint, used only for informational state ────── */
+  --color-woad: oklch(45% 0.13 255);
+  --color-woad-soft: oklch(96% 0.02 255);
+
+  /* ── Semantic — reserved for state, never for a data series ─────────────
+     Four roles, each with a soft ground and a border tint. These were lost
+     when the categorical palette was installed over them, which left every
+     caution and critical mark resolving to transparent — a suspended passport
+     rendered as an invisible dot. Kept above the categorical block so the
+     ordering reflects the rule: state first, identity second.          ── */
+  --color-positive: oklch(48% 0.096 155);
+  --color-positive-soft: oklch(95.5% 0.024 155);
+  --color-positive-border: oklch(86% 0.055 155);
+
+  --color-caution: oklch(58% 0.11 75);
+  --color-caution-soft: oklch(96% 0.036 82);
+  --color-caution-border: oklch(87% 0.07 80);
+
+  --color-critical: oklch(50% 0.16 27);
+  --color-critical-soft: oklch(95.5% 0.026 27);
+  --color-critical-border: oklch(86% 0.065 27);
+
+  --color-info: var(--color-woad);
+  --color-info-soft: var(--color-woad-soft);
+  --color-info-border: oklch(87% 0.05 255);
+
+  /* ── Categorical data palette ───────────────────────────────────────────
+     Eight fixed slots, assigned in order and never cycled. These were checked
+     with the palette validator against this product's own surfaces, not chosen
+     by eye: the previous set failed on adjacent-pair separation — two slots sat
+     7.1 ΔE apart in *normal* vision, so nobody could tell them apart, let alone
+     a colour-blind reader.
+
+     Three light-mode slots sit below 3:1 against the warm canvas, which the
+     validator flags as needing relief. That obligation is met by direct labels
+     on every chart that uses them; none of them ever carries meaning alone. ── */
+  --color-series-1: #2a78d6;
+  --color-series-2: #eb6834;
+  --color-series-3: #1baf7a;
+  --color-series-4: #eda100;
+  --color-series-5: #e87ba4;
+  --color-series-6: #008300;
+  --color-series-7: #4a3aa7;
+  --color-series-8: #e34948;
+
+  /* ── Chart furniture — recessive by design ───────────────────────────── */
+  --color-gridline: #ececef;
+  --color-baseline: #d3d3d9;
+  --color-axis-ink: #85858f;
+
+  /* ── Sequential ramp, one hue light→dark, for magnitude ──────────────── */
+  --color-ramp-100: #cde2fb;
+  --color-ramp-200: #9ec5f4;
+  --color-ramp-300: #6da7ec;
+  --color-ramp-400: #3987e5;
+  --color-ramp-500: #256abf;
+  --color-ramp-600: #184f95;
+  --color-ramp-700: #0d366b;
+
+  /* ── Type ────────────────────────────────────────────────────────────────
+     The scale is a *system*, not a list of sizes. Three rules make it cohere:
+
+     1. **Optical tracking.** Letter-spacing tightens as size grows. Type drawn
+        for 14px is too loose at 56px; left untracked, large headings look like
+        a word processor. Every step states its own tracking.
+     2. **Leading follows size.** A 44px heading at 1.6 line-height is a
+        paragraph with gaps in it. Leading tightens from 1.6 at body to 1.02 at
+        display.
+     3. **Three weights only.** 400 body, 500 label and emphasis, 600 heading.
+        700 exists in the font and is never used in the interface — the jump
+        from 600 reads as shouting on a screen this dense.
+
+     Sizes are rem so a reader's browser setting still works, chosen against a
+     16px root and a 4px grid.                                             ── */
+  --font-sans: var(--font-sans-geist), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: var(--font-mono-geist), ui-monospace, 'SF Mono', Menlo, monospace;
+  --font-display: var(--font-display-serif), Georgia, 'Times New Roman', serif;
+
+  /* Display — the public passport headline, and nothing else. Serif, 400. */
+  --text-display-1: 3.5rem;
+  --text-display-1--line-height: 1.02;
+  --text-display-1--letter-spacing: -0.028em;
+  --text-display-2: 2.75rem;
+  --text-display-2--line-height: 1.06;
+  --text-display-2--letter-spacing: -0.024em;
+  --text-display-3: 2.125rem;
+  --text-display-3--line-height: 1.12;
+  --text-display-3--letter-spacing: -0.02em;
+
+  /* Title — page and section headings. Geist 600. */
+  --text-title-1: 1.75rem;
+  --text-title-1--line-height: 1.2;
+  --text-title-1--letter-spacing: -0.019em;
+  --text-title-1--font-weight: 600;
+  --text-title-2: 1.3125rem;
+  --text-title-2--line-height: 1.28;
+  --text-title-2--letter-spacing: -0.014em;
+  --text-title-2--font-weight: 600;
+  --text-title-3: 1rem;
+  --text-title-3--line-height: 1.4;
+  --text-title-3--letter-spacing: -0.008em;
+  --text-title-3--font-weight: 600;
+  --text-title-4: 0.875rem;
+  --text-title-4--line-height: 1.45;
+  --text-title-4--letter-spacing: -0.003em;
+  --text-title-4--font-weight: 600;
+
+  /* Body — prose and table cells. Geist 400. */
+  --text-body-1: 1rem;
+  --text-body-1--line-height: 1.6;
+  --text-body-1--letter-spacing: -0.005em;
+  --text-body-2: 0.875rem;
+  --text-body-2--line-height: 1.55;
+  --text-body-2--letter-spacing: 0em;
+  --text-body-3: 0.8125rem;
+  --text-body-3--line-height: 1.5;
+  --text-body-3--letter-spacing: 0.002em;
+
+  /* Label — form labels, table headers, metadata. Geist 500. */
+  --text-label-1: 0.875rem;
+  --text-label-1--line-height: 1.3;
+  --text-label-1--letter-spacing: 0em;
+  --text-label-1--font-weight: 500;
+  --text-label-2: 0.8125rem;
+  --text-label-2--line-height: 1.25;
+  --text-label-2--letter-spacing: 0.004em;
+  --text-label-2--font-weight: 500;
+  --text-label-3: 0.75rem;
+  --text-label-3--line-height: 1.2;
+  --text-label-3--letter-spacing: 0.008em;
+  --text-label-3--font-weight: 500;
+
+  /* Mono — identifiers, hashes, codes. Never prose. */
+  --text-mono-1: 0.8125rem;
+  --text-mono-1--line-height: 1.45;
+  --text-mono-1--letter-spacing: -0.01em;
+  --text-mono-2: 0.75rem;
+  --text-mono-2--line-height: 1.4;
+  --text-mono-2--letter-spacing: -0.008em;
+
+  /* ── The numeric scale ───────────────────────────────────────────────────
+     Every step moved up one rung, and the reason is worth recording because
+     the old values were not obviously wrong in isolation.
+
+     Counted across the app, `text-sm` appeared 551 times, `text-xs` 346 and
+     `text-2xs` 279 — so **93% of every explicitly-sized string in the product
+     was set at 13px or below**. Worse, the single most-used utility of the
+     three was *smaller than the document's own default body size*: `body` is
+     `body-2` at 14px, and `text-sm` resolved to 13px. Most text that had been
+     deliberately sized was therefore smaller than text nobody had sized at
+     all, which is not a decision anyone made — it is what happens when a
+     compressed scale meets Tailwind muscle memory, where `text-sm` means 14px
+     everywhere else in the ecosystem.
+
+     The steps now land *on* the role scale above rather than one below it:
+     2xs = label-3, xs = body-3, sm = body-2 (and so agrees with `body`),
+     lg = body-1. Leading rises with each step so the ratio stays on the same
+     curve, and tracking loosens as size drops, as it did before.
+
+     11px is gone entirely. It is below the floor for anything a person reads
+     rather than glances at, and it was carrying GTINs and version strings. ── */
+  --text-2xs: 0.75rem;
+  --text-2xs--line-height: 1.125rem;
+  --text-2xs--letter-spacing: 0.012em;
+  --text-xs: 0.8125rem;
+  --text-xs--line-height: 1.25rem;
+  --text-xs--letter-spacing: 0.004em;
+  --text-sm: 0.875rem;
+  --text-sm--line-height: 1.375rem;
+  --text-sm--letter-spacing: 0em;
+  --text-base: 0.9375rem;
+  --text-base--line-height: 1.5rem;
+  --text-base--letter-spacing: -0.004em;
+  --text-lg: 1rem;
+  --text-lg--line-height: 1.625rem;
+  --text-lg--letter-spacing: -0.006em;
+  --text-xl: 1.1875rem;
+  --text-xl--line-height: 1.6rem;
+  --text-xl--letter-spacing: -0.012em;
+  --text-2xl: 1.4375rem;
+  --text-2xl--line-height: 1.85rem;
+  --text-2xl--letter-spacing: -0.016em;
+  --text-3xl: 1.75rem;
+  --text-3xl--line-height: 2.1rem;
+  --text-3xl--letter-spacing: -0.019em;
+  --text-4xl: 2.125rem;
+  --text-4xl--line-height: 2.375rem;
+  --text-4xl--letter-spacing: -0.021em;
+  --text-5xl: 2.75rem;
+  --text-5xl--line-height: 2.9rem;
+  --text-5xl--letter-spacing: -0.024em;
+  --text-6xl: 3.5rem;
+  --text-6xl--line-height: 3.5rem;
+  --text-6xl--letter-spacing: -0.028em;
+
+  /* ── Radii — small and consistent; nothing here is a pill except chips ── */
+  --radius-xs: 3px;
+  --radius-sm: 5px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 18px;
+  --radius-2xl: 26px;
+
+  /* ── Elevation ───────────────────────────────────────────────────────────
+     Every step is built from the same physical model rather than picked by
+     eye, which is what stops a set of shadows reading as a set of smudges:
+
+     1. **A contact layer that never changes.** `0 1px 1px` at 4% sits on every
+        rung, including the lowest. It is the line where the object meets the
+        surface it rests on, and it is most of the difference between an
+        element that is *placed* and one that is merely lighter than its
+        background.
+     2. **An ambient layer that grows with the rung**, offset and blur roughly
+        doubling each step, with negative spread so the shadow tucks under the
+        element instead of haloing out past its edges.
+     3. **Opacity that grows far slower than blur.** Doubling both is the most
+        common way a shadow ladder turns into grey fog by its third step.
+
+     Tinted warm (the same hue family as the ink) rather than pure black:
+     black over a warm neutral reads as dirt, which is the other half of why
+     most interface shadows look cheap.                                   ── */
+  --shadow-xs:
+    0 1px 1px oklch(21% 0.012 65 / 0.04),
+    0 1px 2px -1px oklch(21% 0.012 65 / 0.06);
+  --shadow-sm:
+    0 1px 1px oklch(21% 0.012 65 / 0.04),
+    0 2px 4px -1px oklch(21% 0.012 65 / 0.06),
+    0 4px 8px -2px oklch(21% 0.012 65 / 0.05);
+  --shadow-md:
+    0 1px 1px oklch(21% 0.012 65 / 0.04),
+    0 4px 8px -2px oklch(21% 0.012 65 / 0.07),
+    0 12px 20px -6px oklch(21% 0.012 65 / 0.09);
+  --shadow-lg:
+    0 1px 1px oklch(21% 0.012 65 / 0.04),
+    0 8px 16px -4px oklch(21% 0.012 65 / 0.08),
+    0 24px 44px -12px oklch(21% 0.012 65 / 0.14);
+  /* The top rung: a sheet or a card that has genuinely left the page. */
+  --shadow-xl:
+    0 1px 1px oklch(21% 0.012 65 / 0.04),
+    0 12px 24px -6px oklch(21% 0.012 65 / 0.09),
+    0 40px 72px -20px oklch(21% 0.012 65 / 0.2);
+  --shadow-focus: 0 0 0 3px var(--color-accent-soft), 0 0 0 1px var(--color-accent);
+
+  /* ── Motion ──────────────────────────────────────────────────────────────
+     Motion here has one job: to say where something came from, so a change of
+     state reads as a movement rather than a redraw. Anything that only
+     decorates is cut.
+
+     Two rules govern every value below.
+
+     1. **Duration scales with distance, not importance.** A 4px hover shift
+        and a full-screen sheet cannot share a duration — the first feels
+        sluggish at 300ms and the second feels violent at 100ms.
+     2. **Entering is slower than leaving.** An element arriving needs to be
+        followed; an element leaving is already dismissed, and making someone
+        wait for it is the most common way an interface feels slow.       ── */
+
+  /* :active press feedback, and nothing else. Below this the pointer stops
+     feeling like the cause. (Radix Themes ships 40ms for exactly this.) */
+  --duration-instant: 40ms;
+  /* Hover, focus ring, checkbox tick, a colour change. Nielsen's 0.1s
+     instantaneity limit — under this the response reads as simultaneous. */
+  --duration-fast: 100ms;
+  /* THE DEFAULT. Popover, dropdown, chip swap, toggle, inline validation.
+     Carbon calls its equivalent step "the default transition speed". */
+  --duration-base: 150ms;
+  /* Dialog, accordion, a list item arriving, side-panel content. */
+  --duration-moderate: 200ms;
+  /* Side panel, stepper connector, shared element. Emil Kowalski's stated
+     ceiling for UI motion, and it is a ceiling, not a target. */
+  --duration-slow: 300ms;
+  /* Toast, chart entrance, scroll reveal. NN/g's upper limit. */
+  --duration-slower: 400ms;
+  /* Bottom sheet and drawer only — the full height of the viewport. */
+  --duration-sheet: 500ms;
+  /* Deliberate storytelling: a ring drawing while its counter settles.
+     Nothing in the console reaches this; the public passport may. */
+  --duration-narrative: 800ms;
+  /* Skeleton pulse loop. */
+  --duration-pulse: 2000ms;
+
+  /* THE DEFAULT for anything entering, and for anything the user just asked
+     for. Starts fast, so movement is visible on the frame after the input —
+     which is what "responsive" physically is. */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  /* A gentler arrival, for large surfaces and scroll reveals. */
+  --ease-out-soft: cubic-bezier(0, 0, 0.2, 1);
+  /* EXITS ONLY. Never on an enter: it withholds movement during the exact
+     window the user is watching hardest, so it reads as slower than it is. */
+  --ease-in-soft: cubic-bezier(0.4, 0, 1, 1);
+  /* Something already on screen moving or morphing — a tab indicator, a row
+     being displaced. Not an entrance, not an exit. */
+  --ease-in-out-soft: cubic-bezier(0.4, 0, 0.2, 1);
+  /* Sheets, drawers, side panels, shared elements. Matches iOS. */
+  --ease-standard: cubic-bezier(0.32, 0.72, 0, 1);
+  /* One hero moment per screen, at most. The completeness ring is the one. */
+  --ease-emphasized: cubic-bezier(0.05, 0.7, 0.1, 1);
+  /* A restrained overshoot. Used only where a physical object is implied. */
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+
+  /* Stagger between siblings in a list. Six items maximum — beyond that the
+     last item arrives so late it reads as lag rather than sequence, and the
+     seventh onwards should arrive as one block instead. */
+  --stagger: 40ms;
+}
+
+/* ── Dark mode ────────────────────────────────────────────────────────────
+   Not an inversion, and deliberately not black. The previous ladder started at
+   17.5% lightness, which on an OLED panel is indistinguishable from the bezel:
+   cards had nothing to sit on, the sidebar read as a hole in the screen, and
+   every hairline had to fight for contrast. This ladder starts at 21% and
+   lifts each surface a clear step above the last, so depth comes from the
+   surfaces rather than from shadows that a dark ground cannot show anyway.
+
+   The accent is lifted two steps because a 43% lightness madder disappears
+   against a dark ground.
+
+   The palette is declared twice on purpose. A public passport has to render
+   correctly with JavaScript disabled, and the class-based switch that
+   next-themes writes onto <html> only exists once JS has run — so the media
+   query carries the no-JS case, and the class carries an explicit choice and
+   wins over the system preference in both directions. CSS has no mechanism to
+   share one declaration block between two selectors without a preprocessor,
+   so the duplication is the cost of working without scripting. */
+@layer base {
+  @media (prefers-color-scheme: dark) {
+    :root:not(.light) {
+      --color-canvas: oklch(21% 0.008 265);
+      --color-surface: oklch(24.4% 0.009 265);
+      --color-surface-sunken: oklch(18.6% 0.007 265);
+      --color-surface-raised: oklch(28% 0.01 265);
+      --color-overlay: oklch(12% 0.008 265 / 0.62);
+
+      --color-ink: oklch(96% 0.003 265);
+      --color-ink-muted: oklch(75% 0.006 265);
+      --color-ink-subtle: oklch(62% 0.007 265);
+      --color-ink-inverse: oklch(21% 0.008 265);
+
+      /* Chrome drops *below* the canvas here rather than sitting above it, so
+         the two grounds still separate when everything is dark. Only the base
+         steps move; the accent and state values are already the dark-ground
+         answers, so they are identical in both themes by construction.
+
+         (This block previously declared the same six properties twice, the
+         second copy at the wrong indentation — a paste that had been carried
+         along silently because the values happened to agree.) */
+      --color-chrome: oklch(17% 0.008 265);
+      --color-chrome-raised: oklch(23% 0.01 265);
+      --color-chrome-line: oklch(27% 0.01 265);
+      --color-chrome-line-strong: oklch(35% 0.011 265);
+      --color-chrome-ink: oklch(95% 0.003 265);
+      --color-chrome-ink-muted: oklch(71% 0.007 265);
+      --color-chrome-ink-subtle: oklch(60% 0.008 265);
+
+      --color-line: oklch(32.5% 0.009 265);
+      --color-line-strong: oklch(40.5% 0.011 265);
+      --color-line-hover: oklch(48% 0.013 265);
+
+      --color-accent: var(--color-madder-400);
+      --color-accent-hover: var(--color-madder-300);
+      --color-accent-soft: oklch(31.5% 0.062 36);
+      --color-accent-border: oklch(41% 0.095 36);
+      --color-on-accent: oklch(16% 0.02 36);
+
+      --color-woad: oklch(72% 0.11 255);
+      --color-woad-soft: oklch(32% 0.056 255);
+
+      /* Lifted for legibility on a dark ground; same hue angles as light. */
+      --color-series-1: oklch(70% 0.08 225);
+      --color-series-2: oklch(72% 0.13 40);
+      --color-series-3: oklch(74% 0.055 85);
+      --color-series-4: oklch(72% 0.082 150);
+      --color-series-5: oklch(72% 0.085 350);
+      --color-series-6: oklch(70% 0.1 265);
+      --color-series-7: oklch(76% 0.1 70);
+      --color-series-8: oklch(70% 0.03 300);
+
+      --color-positive: oklch(74% 0.12 155);
+      --color-positive-soft: oklch(31.5% 0.052 155);
+      --color-positive-border: oklch(41% 0.076 155);
+
+      --color-caution: oklch(80% 0.12 82);
+      --color-caution-soft: oklch(32.5% 0.056 82);
+      --color-caution-border: oklch(42.5% 0.08 82);
+
+      --color-critical: oklch(70% 0.15 27);
+      --color-critical-soft: oklch(32% 0.062 27);
+      --color-critical-border: oklch(42.5% 0.095 27);
+
+      --color-info: var(--color-woad);
+      --color-info-soft: var(--color-woad-soft);
+      --color-info-border: oklch(42.5% 0.086 255);
+
+      /* Same three-layer model, pure black and much stronger: on a dark ground
+         a tinted shadow is invisible, and separation has to come from the
+         surface step first — the shadow only confirms it. */
+      --shadow-xs: 0 1px 1px oklch(0% 0 0 / 0.3), 0 1px 2px -1px oklch(0% 0 0 / 0.4);
+      --shadow-sm:
+        0 1px 1px oklch(0% 0 0 / 0.3),
+        0 2px 4px -1px oklch(0% 0 0 / 0.36),
+        0 4px 8px -2px oklch(0% 0 0 / 0.3);
+      --shadow-md:
+        0 1px 1px oklch(0% 0 0 / 0.3),
+        0 4px 8px -2px oklch(0% 0 0 / 0.38),
+        0 12px 20px -6px oklch(0% 0 0 / 0.42);
+      --shadow-lg:
+        0 1px 1px oklch(0% 0 0 / 0.3),
+        0 8px 16px -4px oklch(0% 0 0 / 0.4),
+        0 24px 44px -12px oklch(0% 0 0 / 0.5);
+      --shadow-xl:
+        0 1px 1px oklch(0% 0 0 / 0.3),
+        0 12px 24px -6px oklch(0% 0 0 / 0.42),
+        0 40px 72px -20px oklch(0% 0 0 / 0.6);
+  }
+  }
+
+  .dark {
+    --color-canvas: oklch(21% 0.008 265);
+    --color-surface: oklch(24.4% 0.009 265);
+    --color-surface-sunken: oklch(18.6% 0.007 265);
+    --color-surface-raised: oklch(28% 0.01 265);
+    --color-overlay: oklch(12% 0.008 265 / 0.62);
+
+    --color-ink: oklch(96% 0.003 265);
+    --color-ink-muted: oklch(75% 0.006 265);
+    --color-ink-subtle: oklch(62% 0.007 265);
+    --color-ink-inverse: oklch(21% 0.008 265);
+
+    --color-line: oklch(32.5% 0.009 265);
+    --color-line-strong: oklch(40.5% 0.011 265);
+    --color-line-hover: oklch(48% 0.013 265);
+
+    --color-accent: var(--color-madder-400);
+    --color-accent-hover: var(--color-madder-300);
+    --color-accent-soft: oklch(31.5% 0.062 36);
+    --color-accent-border: oklch(41% 0.095 36);
+    --color-on-accent: oklch(16% 0.02 36);
+
+    --color-woad: oklch(72% 0.11 255);
+    --color-woad-soft: oklch(32% 0.056 255);
+
+    /* Selected steps for the dark surface, not an automatic flip of the light
+       set. Validated separately against the dark ground. */
+    --color-series-1: #3987e5;
+    --color-series-2: #d95926;
+    --color-series-3: #199e70;
+    --color-series-4: #c98500;
+    --color-series-5: #d55181;
+    --color-series-6: #008300;
+    --color-series-7: #9085e9;
+    --color-series-8: #e66767;
+
+    --color-gridline: #2c2c2a;
+    --color-baseline: #383835;
+    --color-axis-ink: #898781;
+
+    --color-ramp-100: #0d366b;
+    --color-ramp-200: #184f95;
+    --color-ramp-300: #256abf;
+    --color-ramp-400: #3987e5;
+    --color-ramp-500: #6da7ec;
+    --color-ramp-600: #9ec5f4;
+    --color-ramp-700: #cde2fb;
+
+    --color-positive: oklch(74% 0.12 155);
+    --color-positive-soft: oklch(31.5% 0.052 155);
+    --color-positive-border: oklch(41% 0.076 155);
+
+    --color-caution: oklch(80% 0.12 82);
+    --color-caution-soft: oklch(32.5% 0.056 82);
+    --color-caution-border: oklch(42.5% 0.08 82);
+
+    --color-critical: oklch(70% 0.15 27);
+    --color-critical-soft: oklch(32% 0.062 27);
+    --color-critical-border: oklch(42.5% 0.095 27);
+
+    --color-info: var(--color-woad);
+    --color-info-soft: var(--color-woad-soft);
+    --color-info-border: oklch(42.5% 0.086 255);
+
+    /* Chrome drops below the canvas, exactly as in the media-query block.
+       This was missing here: with the `.dark` class set explicitly rather than
+       inherited from the system setting, chrome stayed at its light-theme
+       20.5% against a 21% canvas — two grounds half a percent apart, which is
+       a sidebar that has vanished into the page. It only escaped notice
+       because the media query covered the common path. */
+    --color-chrome: oklch(17% 0.008 265);
+    --color-chrome-raised: oklch(23% 0.01 265);
+    --color-chrome-line: oklch(27% 0.01 265);
+    --color-chrome-line-strong: oklch(35% 0.011 265);
+    --color-chrome-ink: oklch(95% 0.003 265);
+    --color-chrome-ink-muted: oklch(71% 0.007 265);
+    --color-chrome-ink-subtle: oklch(60% 0.008 265);
+
+    /* Kept byte-identical to the media-query block above; a `.dark` class that
+       disagreed with the system preference would be a bug nobody could see. */
+    --shadow-xs: 0 1px 1px oklch(0% 0 0 / 0.3), 0 1px 2px -1px oklch(0% 0 0 / 0.4);
+    --shadow-sm:
+      0 1px 1px oklch(0% 0 0 / 0.3),
+      0 2px 4px -1px oklch(0% 0 0 / 0.36),
+      0 4px 8px -2px oklch(0% 0 0 / 0.3);
+    --shadow-md:
+      0 1px 1px oklch(0% 0 0 / 0.3),
+      0 4px 8px -2px oklch(0% 0 0 / 0.38),
+      0 12px 20px -6px oklch(0% 0 0 / 0.42);
+    --shadow-lg:
+      0 1px 1px oklch(0% 0 0 / 0.3),
+      0 8px 16px -4px oklch(0% 0 0 / 0.4),
+      0 24px 44px -12px oklch(0% 0 0 / 0.5);
+    --shadow-xl:
+      0 1px 1px oklch(0% 0 0 / 0.3),
+      0 12px 24px -6px oklch(0% 0 0 / 0.42),
+      0 40px 72px -20px oklch(0% 0 0 / 0.6);
+  }
+}
+
+@layer base {
+  * {
+    border-color: var(--color-line);
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: var(--text-body-2);
+    line-height: 1.55;
+    /* 450, not 400. Antialiasing on macOS shaves optical weight off a
+       grotesque at 13-14px, and Geist is variable, so the UI runs half a step
+       heavier to come out *looking* like 400 print. Explicit weights (500
+       label, 600 heading) are untouched; this only firms up running text. */
+    font-weight: 450;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /* Contextual alternates only. The `cv*` sets that were here are Inter's
+       character variants and do nothing in Geist — they were dead declarations
+       inherited from the previous typeface. */
+    font-feature-settings: 'calt' 1;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Tabular figures wherever a number sits above, below or beside another one.
+     Proportional digits make a column of percentages ripple; this is the single
+     cheapest thing that makes dense data look engineered. */
+  .tnum,
+  table,
+  input[type='number'],
+  [data-numeric] {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: 'calt' 1, 'tnum' 1;
+  }
+
+  /* Headings inherit the scale's weight rather than the browser's bold. */
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-weight: 600;
+    letter-spacing: -0.014em;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+    border-radius: var(--radius-xs);
+  }
+
+  ::selection {
+    background-color: var(--color-accent-soft);
+    color: var(--color-ink);
+  }
+
+  /* Let the browser paint a matching scrollbar in both themes. */
+  html {
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    html:not(.light) {
+      color-scheme: dark;
+    }
+  }
+  html.dark {
+    color-scheme: dark;
+  }
+  html.light {
+    color-scheme: light;
+  }
+}
+
+@layer components {
+  /* ── Standing on the chrome ground ───────────────────────────────────────
+     `.on-chrome` paints an element with the chrome ground **and re-points the
+     semantic roles inside it**, so everything underneath renders correctly on
+     dark without knowing it is on dark.
+
+     This is the whole reason the roles are named by job rather than by value.
+     A `<Button>`, a `<Badge>`, a `<Table>` all ask for `--color-ink`,
+     `--color-line`, `--color-accent`; inside this class those names resolve to
+     the dark-ground answers, and not one component has to be rewritten, given
+     a `dark` variant, or handed a `tone` prop. Drop a dark panel anywhere and
+     the system follows it in.
+
+     It also replaces the obvious alternative — writing `dark:` variants on
+     every component — which fails outright here, because chrome is dark *in
+     the light theme too*, and `dark:` is bound to the theme rather than to the
+     ground an element is standing on.
+
+     Compose, never nest: a `.on-chrome` inside a `.on-chrome` is a second dark
+     panel on a dark panel, which no arrangement in this product needs.     ── */
+  .on-chrome {
+    background-color: var(--color-chrome);
+    color: var(--color-chrome-ink);
+
+    /* Surfaces */
+    --color-canvas: var(--color-chrome);
+    --color-surface: var(--color-chrome-raised);
+    --color-surface-sunken: var(--color-chrome);
+    --color-surface-raised: var(--color-chrome-line);
+
+    /* Ink — 1:1 with the content scale's three weights */
+    --color-ink: var(--color-chrome-ink);
+    --color-ink-muted: var(--color-chrome-ink-muted);
+    --color-ink-subtle: var(--color-chrome-ink-subtle);
+    --color-ink-inverse: var(--color-chrome);
+
+    /* Lines */
+    --color-line: var(--color-chrome-line);
+    --color-line-strong: var(--color-chrome-line-strong);
+    --color-line-hover: var(--color-chrome-ink-subtle);
+
+    /* Action */
+    --color-accent: var(--color-chrome-accent);
+    --color-accent-hover: var(--color-chrome-accent-hover);
+    --color-accent-soft: var(--color-chrome-accent-soft);
+    --color-accent-border: var(--color-chrome-accent-border);
+    --color-on-accent: var(--color-chrome-on-accent);
+
+    /* State, in all three parts: ink, ground and border. Unlifted semantic
+       colours are tuned for a white ground and go muddy to invisible here,
+       which is how a dark panel ends up with an error message nobody can
+       read — or, if only the ink is mapped, a pale mint badge on near-black. */
+    --color-positive: var(--color-chrome-positive);
+    --color-positive-soft: var(--color-chrome-positive-soft);
+    --color-positive-border: var(--color-chrome-positive-border);
+    --color-caution: var(--color-chrome-caution);
+    --color-caution-soft: var(--color-chrome-caution-soft);
+    --color-caution-border: var(--color-chrome-caution-border);
+    --color-critical: var(--color-chrome-critical);
+    --color-critical-soft: var(--color-chrome-critical-soft);
+    --color-critical-border: var(--color-chrome-critical-border);
+    --color-info: var(--color-chrome-info);
+    --color-info-soft: var(--color-chrome-info-soft);
+    --color-info-border: var(--color-chrome-info-border);
+  }
+
+  /* ── Semantic type roles ──────────────────────────────────────────────────
+     Reach for these rather than composing `text-sm font-medium tracking-tight`
+     by hand. A role names the job — "this is a section title" — so the scale
+     can be retuned in one place without hunting through forty screens for the
+     markup that happened to look right at the time.                       ── */
+
+  .display-1 { font: 400 var(--text-display-1) / var(--text-display-1--line-height) var(--font-display); letter-spacing: var(--text-display-1--letter-spacing); }
+  .display-2 { font: 400 var(--text-display-2) / var(--text-display-2--line-height) var(--font-display); letter-spacing: var(--text-display-2--letter-spacing); }
+  .display-3 { font: 400 var(--text-display-3) / var(--text-display-3--line-height) var(--font-display); letter-spacing: var(--text-display-3--letter-spacing); }
+
+  .title-1 { font: 600 var(--text-title-1) / var(--text-title-1--line-height) var(--font-sans); letter-spacing: var(--text-title-1--letter-spacing); }
+  .title-2 { font: 600 var(--text-title-2) / var(--text-title-2--line-height) var(--font-sans); letter-spacing: var(--text-title-2--letter-spacing); }
+  .title-3 { font: 600 var(--text-title-3) / var(--text-title-3--line-height) var(--font-sans); letter-spacing: var(--text-title-3--letter-spacing); }
+  .title-4 { font: 600 var(--text-title-4) / var(--text-title-4--line-height) var(--font-sans); letter-spacing: var(--text-title-4--letter-spacing); }
+
+  .body-1 { font: 400 var(--text-body-1) / var(--text-body-1--line-height) var(--font-sans); letter-spacing: var(--text-body-1--letter-spacing); }
+  .body-2 { font: 400 var(--text-body-2) / var(--text-body-2--line-height) var(--font-sans); letter-spacing: var(--text-body-2--letter-spacing); }
+  .body-3 { font: 400 var(--text-body-3) / var(--text-body-3--line-height) var(--font-sans); letter-spacing: var(--text-body-3--letter-spacing); }
+
+  .label-1 { font: 500 var(--text-label-1) / var(--text-label-1--line-height) var(--font-sans); letter-spacing: var(--text-label-1--letter-spacing); }
+  .label-2 { font: 500 var(--text-label-2) / var(--text-label-2--line-height) var(--font-sans); letter-spacing: var(--text-label-2--letter-spacing); }
+  .label-3 { font: 500 var(--text-label-3) / var(--text-label-3--line-height) var(--font-sans); letter-spacing: var(--text-label-3--letter-spacing); }
+
+  /* An editorial headline: the serif, optically tightened, never bold.
+     Retained as an alias of display-3 so existing markup keeps its meaning. */
+  .display {
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.06;
+  }
+
+  /* Small caps section marker. Tracking opens up because uppercase at 11px set
+     solid is genuinely hard to read. */
+  .eyebrow {
+    /* 12px, with the rest of the scale. Uppercase at this much tracking reads
+       larger than its nominal size, which is the argument that kept it at 11px
+       — but it is a section marker people actually read, and leaving one 11px
+       rung behind after removing the others is how a scale grows an exception
+       nobody can justify later. */
+    font-size: 0.75rem;
+    font-weight: 560;
+    line-height: 1.1;
+    letter-spacing: 0.085em;
+    text-transform: uppercase;
+    color: var(--color-ink-subtle);
+  }
+
+  /* Identifiers, hashes, codes. Never prose — Geist Mono is a data face and
+     reads as a receipt when it carries a sentence. */
+  .mono {
+    font-family: var(--font-mono);
+    font-size: 0.925em;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .mono-1 { font: 400 var(--text-mono-1) / var(--text-mono-1--line-height) var(--font-mono); letter-spacing: var(--text-mono-1--letter-spacing); font-variant-numeric: tabular-nums; }
+  .mono-2 { font: 400 var(--text-mono-2) / var(--text-mono-2--line-height) var(--font-mono); letter-spacing: var(--text-mono-2--letter-spacing); font-variant-numeric: tabular-nums; }
+
+  /*
+   * A hairline that survives fractional device pixel ratios. A plain 1px
+   * border rounds to 0.5px on some displays and disappears entirely, which is
+   * why table rules look inconsistent across machines.
+   */
+  .hairline {
+    box-shadow: inset 0 -1px 0 0 var(--color-line);
+  }
+}
+
+@layer utilities {
+  .grain {
+    position: relative;
+  }
+
+  /*
+   * A faint paper grain over large flat areas. At 2.5% opacity it is not
+   * consciously visible; it exists to stop full-bleed neutral panels reading
+   * as flat digital grey, which is what makes most compliance UI feel cheap.
+   */
+  .grain::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* ── Entrances ───────────────────────────────────────────────────────────
+     CSS rather than JavaScript wherever the element is server-rendered, so the
+     public passport keeps its motion without shipping a runtime.          ── */
+  .animate-in-up {
+    animation: in-up var(--duration-slow) var(--ease-out-soft) both;
+  }
+  .animate-in-fade {
+    animation: in-fade var(--duration-base) var(--ease-out-soft) both;
+  }
+  .animate-in-scale {
+    animation: in-scale var(--duration-base) var(--ease-out-soft) both;
+  }
+
+  /* Six steps only. A seventh item would arrive late enough to read as lag. */
+  .stagger-1 { animation-delay: calc(var(--stagger) * 1); }
+  .stagger-2 { animation-delay: calc(var(--stagger) * 2); }
+  .stagger-3 { animation-delay: calc(var(--stagger) * 3); }
+  .stagger-4 { animation-delay: calc(var(--stagger) * 4); }
+  .stagger-5 { animation-delay: calc(var(--stagger) * 5); }
+  .stagger-6 { animation-delay: calc(var(--stagger) * 6); }
+
+  @keyframes in-up {
+    from { opacity: 0; transform: translate3d(0, 10px, 0); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes in-fade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes in-scale {
+    from { opacity: 0; transform: scale(0.97); }
+    to { opacity: 1; transform: none; }
+  }
+
+  /*
+   * Disclosure without measuring.
+   *
+   * Animating `height` from 0 to auto is impossible without JavaScript
+   * measuring the content first. `grid-template-rows` from `0fr` to `1fr`
+   * animates natively, needs no measurement, and works on a server-rendered
+   * `<details>` — which is why the public passport can have animated sections
+   * with no client bundle at all.
+   */
+  .disclose {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows var(--duration-base) var(--ease-standard);
+  }
+  .disclose > * {
+    overflow: hidden;
+  }
+  [open] > .disclose,
+  .disclose[data-open='true'] {
+    grid-template-rows: 1fr;
+  }
+
+  /*
+   * A ring that draws itself.
+   *
+   * The keyframe states only `from`; the resting state is the element's own
+   * inline `stroke-dasharray`, so the arc always finishes at the true value
+   * and a browser that skips the animation still renders the correct ring.
+   * The circumference arrives as a custom property because it depends on the
+   * ring's size, which is a prop.
+   */
+  .meter-arc {
+    animation: meter-draw var(--duration-narrative) var(--ease-out-soft) both;
+  }
+  @keyframes meter-draw {
+    from {
+      stroke-dasharray: 0 var(--meter-circumference);
+    }
+  }
+
+  /* A bar or ring that grows from nothing when it first appears. */
+  .grow-x {
+    transform-origin: left center;
+    animation: grow-x var(--duration-narrative) var(--ease-out-soft) both;
+  }
+  @keyframes grow-x {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+  }
+
+  /*
+   * Loading shimmer. A moving highlight rather than a pulsing block: a pulse
+   * reads as "broken", a sweep reads as "working".
+   */
+  .shimmer {
+    background-image: linear-gradient(
+      90deg,
+      transparent 0%,
+      color-mix(in oklch, var(--color-ink) 6%, transparent) 50%,
+      transparent 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.4s linear infinite;
+  }
+  @keyframes shimmer {
+    from { background-position: 200% 0; }
+    to { background-position: -200% 0; }
+  }
+
+  /* A row that has just changed state, marked without a toast. */
+  .flash {
+    animation: flash var(--duration-narrative) var(--ease-out-soft);
+  }
+  @keyframes flash {
+    from { background-color: var(--color-accent-soft); }
+    to { background-color: transparent; }
+  }
+
+  /* Press feedback. 1px, never a scale — scaling a button reads as a toy. */
+  .press {
+    transition: transform var(--duration-instant) var(--ease-standard);
+  }
+  .press:active {
+    transform: translateY(1px);
+  }
+
+  /* ── The console rail ────────────────────────────────────────────────────
+     The rail is chrome a person works beside for hours, so its depth is
+     ambient and *still*: the same two dyed-cloth washes as the sign-in panel
+     — warm at the crown, cool at the base — at a fraction of the strength,
+     plus a 1px light seam on the inner edge so the rail reads as a surface
+     sitting under the page rather than a flat fill beside it. Nothing in the
+     rail moves on its own; motion here always answers an action.        ── */
+  .rail-panel {
+    background-color: var(--color-rail);
+    background-image:
+      radial-gradient(140% 45% at 25% 0%, oklch(32% 0.03 36 / 0.3), transparent 62%),
+      radial-gradient(150% 50% at 75% 100%, oklch(28% 0.035 255 / 0.26), transparent 60%);
+  }
+  .rail-panel::after {
+    content: '';
+    position: absolute;
+    inset: 0 0 0 auto;
+    width: 1px;
+    background: linear-gradient(
+      to bottom,
+      oklch(100% 0 0 / 0.07),
+      oklch(100% 0 0 / 0.02) 40%,
+      oklch(100% 0 0 / 0.07)
+    );
+    pointer-events: none;
+  }
+
+  /* The icon leans into the row. Transform only — the label never shifts,
+     because a row whose text moves reads as unstable, not alive. */
+  .rail-item-icon {
+    transition: transform var(--duration-base) var(--ease-out);
+  }
+  a:hover > .rail-item-icon,
+  a:hover > * > .rail-item-icon,
+  button:hover > .rail-item-icon {
+    transform: translateX(2px);
+  }
+
+  /* ── Public passport arrivals ────────────────────────────────────────────
+     Sections rise as they scroll into view — a CSS scroll-driven animation,
+     which is the only kind this page is allowed: the public passport ships no
+     JavaScript, and it must not start. Where `animation-timeline` is
+     unsupported the rule never applies and every section is simply visible,
+     which is also what an archive crawler and a print stylesheet get. ── */
+  @supports (animation-timeline: view()) {
+    .passport-sections > * {
+      animation: in-up var(--duration-slow) var(--ease-out-soft) both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 35%;
+    }
+
+    /* A proportion bar that draws itself as it scrolls into view. The final
+       state is the resting state, so an unsupporting browser and a printout
+       simply show the finished bar. */
+    .grow-view {
+      transform-origin: left center;
+      animation: grow-x var(--duration-narrative) var(--ease-out-soft) both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 45%;
+    }
+  }
+
+  /* ── Passport hero object ──────────────────────────────────────────────
+     The garment as an object with depth rather than a flat thumbnail: a
+     resting three-quarter tilt, a slow vertical drift, and two data chips
+     floating 46px above the card in real 3D. Perspective sits on the stage
+     so the vanishing point holds while the card moves — same rule as the
+     flip card. Hover eases the tilt toward flat, which reads as the object
+     turning to face the reader. All CSS; the page still ships no script. */
+  .hero-stage {
+    perspective: 1600px;
+  }
+  .hero-object {
+    position: relative;
+    transform-style: preserve-3d;
+    /* Small angles on purpose. A card carrying body text at 8° has visibly
+       soft glyph edges; at 2° it reads as a physical object and the type
+       stays crisp. */
+    transform: rotateX(2deg) rotateY(-2.5deg);
+    transition: transform var(--duration-sheet) var(--ease-standard);
+    animation: hero-float 8s var(--ease-in-out-soft) infinite;
+    animation-delay: 1.2s;
+  }
+  /* Turning to face the reader when they approach it. */
+  .hero-stage:hover .hero-object {
+    transform: rotateX(0deg) rotateY(0deg);
+  }
+  @keyframes hero-float {
+    0%, 100% { translate: 0 0; }
+    50% { translate: 0 -6px; }
+  }
+
+  .hero-card {
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-xl);
+    background-color: var(--color-surface);
+    /* The top rung of the ladder, not a bespoke shadow. A one-off here is how
+       a system acquires a second, undocumented elevation scale. */
+    box-shadow: var(--shadow-xl);
+  }
+
+  .hero-chip {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.375rem 0.625rem;
+    border-radius: 0.625rem;
+    border: 1px solid var(--color-line);
+    background-color: oklch(100% 0 0 / 0.9);
+    backdrop-filter: blur(6px);
+    box-shadow: 0 10px 24px oklch(0% 0 0 / 0.14);
+    animation: chip-in var(--duration-slower) var(--ease-out) both;
+  }
+  /* Overhanging the card edge is what makes the chips read as *above* it.
+     The offsets stay inside the page gutter so nothing causes a horizontal
+     scrollbar on a phone. */
+  .hero-chip-a { top: 4.5rem; left: -0.75rem; animation-delay: 560ms; }
+  .hero-chip-b { right: -0.75rem; bottom: 6rem; animation-delay: 700ms; }
+
+  /* The chips' Z-offset lives inside the keyframes because an `animation`
+     ending at `transform: none` would flatten it. */
+  @keyframes chip-in {
+    from { opacity: 0; transform: translateZ(46px) translateY(8px) scale(0.94); }
+    to { opacity: 1; transform: translateZ(46px); }
+  }
+
+  /* ── Sign-in showcase ────────────────────────────────────────────────────
+     A dark panel beside a light form. Every movement below is CSS, because the
+     sign-in page should be complete before any JavaScript arrives — and it is
+     the one screen where a person is waiting rather than working, which is the
+     only honest argument for an entrance animation anywhere in this product.
+
+     Nothing here animates a layout property: the weave breathes on opacity,
+     the tiles arrive and drift on transform.                            ── */
+  .login-panel {
+    background-color: var(--color-rail);
+    /* Two very low-chroma washes rather than a gradient sweep: the panel
+       should read as dyed cloth under uneven light, not as a hero banner. */
+    background-image:
+      radial-gradient(120% 80% at 18% 0%, oklch(38% 0.05 36 / 0.32), transparent 60%),
+      radial-gradient(100% 70% at 92% 100%, oklch(34% 0.04 255 / 0.28), transparent 62%);
+  }
+
+  .login-weave {
+    position: absolute;
+    inset: -8%;
+    z-index: 0;
+    display: grid;
+    grid-template-columns: repeat(16, 1fr);
+    grid-auto-rows: 1fr;
+    gap: 2px;
+    mask-image: radial-gradient(75% 65% at 50% 45%, transparent 18%, #000 100%);
+  }
+  .login-weave > span {
+    background-color: oklch(100% 0 0 / 0.07);
+    border-radius: 2px;
+    animation: weave-breathe 9s var(--ease-in-out-soft) infinite;
+  }
+
+  /* The shuttle: one diagonal band of light crossing the cloth every eight
+     seconds, the way a sheen crosses a weave when it moves. One element,
+     transform-only, and most of its keyframe timeline is spent resting —
+     an ambient effect that is always moving stops being ambient. */
+  .login-panel::after {
+    content: '';
+    position: absolute;
+    inset: -20%;
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(
+      115deg,
+      transparent 42%,
+      oklch(100% 0 0 / 0.045) 50%,
+      transparent 58%
+    );
+    transform: translateX(-70%);
+    animation: shuttle 8s var(--ease-in-out-soft) infinite;
+  }
+  @keyframes shuttle {
+    0% { transform: translateX(-70%); }
+    45%, 100% { transform: translateX(70%); }
+  }
+  @keyframes weave-breathe {
+    0%, 100% { opacity: inherit; }
+    50% { opacity: 0.18; }
+  }
+
+  .login-tiles {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(6, 1fr);
+    padding: 3.5rem 2rem;
+    pointer-events: none;
+  }
+  .login-tile {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0;
+    align-self: center;
+    justify-self: center;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.625rem;
+    border: 1px solid oklch(100% 0 0 / 0.12);
+    background-color: oklch(22% 0.01 265 / 0.82);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 8px 24px oklch(0% 0 0 / 0.35);
+    max-width: 12rem;
+    animation:
+      tile-in var(--duration-slower) var(--ease-out) both,
+      tile-drift 11s var(--ease-in-out-soft) infinite;
+  }
+  /*
+   * Four corners, and nothing in rows 3-4: the headline is the widest element
+   * on the panel and it occupies that band across the full width. Earlier
+   * arrangements put tiles in columns 1-2 and still collided, because a
+   * centred headline reaches further left than the centre column does.
+   */
+  .tile-a { grid-area: 1 / 1 / 2 / 3; animation-delay: 240ms, 0ms; }
+  .tile-b { grid-area: 2 / 5 / 3 / 7; animation-delay: 330ms, 1.5s; }
+  .tile-c { grid-area: 5 / 1 / 6 / 3; animation-delay: 420ms, 3s; }
+  .tile-d { grid-area: 6 / 5 / 7 / 7; animation-delay: 510ms, 4.5s; }
+
+  @keyframes tile-in {
+    from { opacity: 0; transform: translate3d(0, 10px, 0) scale(0.94); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes tile-drift {
+    0%, 100% { translate: 0 0; }
+    50% { translate: 0 -7px; }
+  }
+
+  /* The panel's centrepiece: one live passport, drawn as an object. Same
+     glass as the tiles, one step more present, because it is the product —
+     the tiles are its fields. Arrives last, then drifts on the tiles' own
+     cycle, offset so the panel never moves in unison. */
+  .login-object {
+    border: 1px solid oklch(100% 0 0 / 0.14);
+    background-color: oklch(23% 0.01 265 / 0.85);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 14px 36px oklch(0% 0 0 / 0.4);
+    animation:
+      tile-in var(--duration-slower) var(--ease-out) both,
+      tile-drift 10s var(--ease-in-out-soft) infinite;
+    animation-delay: 420ms, 2.5s;
+  }
+
+  /* The panel's own copy, arriving in reading order. */
+  .login-in { animation: in-up var(--duration-slower) var(--ease-out) both; }
+  .login-d1 { animation-delay: 60ms; }
+  .login-d2 { animation-delay: 140ms; }
+  .login-d3 { animation-delay: 230ms; }
+  .login-d4 { animation-delay: 320ms; }
+
+  /* ── The passport object ─────────────────────────────────────────────────
+     A two-sided card that turns. `perspective` sits on the stage rather than
+     on the card, so the vanishing point stays put while the card rotates —
+     put it on the card and the near edge swells as it turns, which is the
+     tell of every CSS flip-card tutorial.
+
+     Both faces are laid out in the same grid cell, so the stage is as tall as
+     the taller face and nothing reflows when it turns. `backface-visibility`
+     does the hiding; `visibility` would break the mid-turn frame, and
+     `opacity` would let the two faces bleed through each other.        ── */
+  .passport-stage {
+    perspective: 1600px;
+  }
+  .passport-card {
+    display: grid;
+    transform-style: preserve-3d;
+    transition: transform var(--duration-slow) var(--ease-standard);
+  }
+  .passport-card.is-turned {
+    transform: rotateY(180deg);
+  }
+  .passport-face {
+    grid-area: 1 / 1;
+    /* Shorter than a travel document's 88×125. At the true ratio the field
+       block ran out before the card did and left a band of empty stock, which
+       is the one thing that makes a document look like a placeholder. */
+    aspect-ratio: 88 / 112;
+    overflow: hidden;
+    backface-visibility: hidden;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    background-color: var(--color-surface);
+    box-shadow: var(--shadow-sm);
+  }
+  .passport-face-back {
+    transform: rotateY(180deg);
+  }
+
+  /* The code keeps a white quiet zone in both themes, and the literal white
+     here is not a missing token.
+
+     A data carrier is read by a camera, not by a person. Scanners expect dark
+     modules on a light ground, and light-on-dark inversion is outside the
+     symbology's guarantees — plenty of hardware, including most handheld
+     retail scanners, simply will not decode it. An earlier version inherited
+     `currentColor` so it would "theme correctly", which produced a black code
+     on a black card: invisible to a camera and to a person.
+
+     `qrcode` paints the modules with `stroke`, not `fill`, so the rule below
+     targets stroke. That mismatch is what let the inherited colour silently do
+     nothing in the first place. */
+  .passport-qr {
+    background-color: #ffffff;
+    border-radius: var(--radius-sm);
+    padding: 0.625rem;
+  }
+  .passport-qr svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    shape-rendering: crispEdges;
+  }
+  .passport-qr svg path {
+    stroke: #0a0a0a;
+  }
+
+  /* An absent product photograph, drawn as an unwoven swatch rather than as an
+     icon or the words "no image". */
+  .passport-swatch {
+    background-image: repeating-linear-gradient(
+      45deg,
+      var(--color-line) 0 1px,
+      transparent 1px 7px
+    );
+  }
+
+  /* A card that lifts toward the pointer. Shadow and transform only. */
+  .lift {
+    transition:
+      transform var(--duration-fast) var(--ease-standard),
+      box-shadow var(--duration-fast) var(--ease-standard),
+      border-color var(--duration-fast) var(--ease-standard);
+  }
+  .lift:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+  }
+}
+
+/*
+ * Reduced motion, by category rather than by blanket.
+ *
+ * The previous rule set every duration on every element to 0.01ms. That is the
+ * common recipe and it overshoots: WCAG 2.3.3 is about motion animation —
+ * things moving into place or changing size — and it explicitly excludes
+ * colour and opacity changes that do not alter perceived position or size. A
+ * blanket kill therefore removes the press, hover and focus feedback that is
+ * the primary "it heard me" signal, and the interface reads as broken to the
+ * people the setting exists to help.
+ *
+ * So: keep the feedback, keep the fades, remove the travel.
+ */
+@media (prefers-reduced-motion: reduce) {
+  /*
+   * Press, hover, focus and colour are untouched. 40–100ms of colour or a 1px
+   * press is below any vestibular threshold, and it is what tells the user the
+   * pointer landed.
+   */
+
+  /* Anything looping is removed outright. A slower rotation is still a
+     rotation, and an ambient loop is the highest-risk category because it
+     never stops. */
+  *,
+  *::before,
+  *::after {
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Entrances keep their opacity and lose their travel: an element that simply
+     appears is its own comprehension problem, so the fade stays. */
+  .animate-in-up,
+  .animate-in-scale,
+  .animate-in-fade,
+  .grow-x {
+    animation: in-fade var(--duration-base) linear both !important;
+  }
+  .stagger-1,
+  .stagger-2,
+  .stagger-3,
+  .stagger-4,
+  .stagger-5,
+  .stagger-6 {
+    animation-delay: 0ms !important;
+  }
+
+  /* Disclosure keeps its size change — the size change *is* the information —
+     but shortens, and the content inside stops sliding. */
+  .disclose {
+    transition-duration: var(--duration-base);
+  }
+
+  /* Positional motion is replaced by the end state, not slowed down. A card
+     that turns in 3D is exactly what 2.3.3 describes, so it cross-fades
+     between its two faces instead. */
+  .passport-card {
+    transition: none;
+  }
+  .passport-card .passport-face {
+    transition: opacity var(--duration-base) linear;
+    backface-visibility: visible;
+  }
+  .passport-card.is-turned {
+    transform: none;
+  }
+  .passport-card .passport-face-back {
+    transform: none;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .passport-card.is-turned .passport-face {
+    opacity: 0;
+    pointer-events: none;
+  }
+  .passport-card.is-turned .passport-face-back {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* The lift is a 1px translate plus a shadow; the shadow alone carries it. */
+  .lift:hover {
+    transform: none;
+  }
+
+  /* A sweep across a surface is the loop most likely to trigger symptoms.
+     Replaced by a static ground that still reads as "not content yet". */
+  .shimmer {
+    animation: none;
+    background-image: none;
+    background-color: color-mix(in oklch, var(--color-ink) 5%, transparent);
+  }
+
+  /* A one-shot background decay, not movement — kept, but shortened. */
+  .flash {
+    animation-duration: var(--duration-base);
+  }
+
+  /* The sign-in panel holds still. A breathing grid behind a headline is the
+     single highest-risk element on the page for anyone who asked for less
+     movement, and it carries no information — so it simply stops. */
+  .login-weave > span,
+  .login-tile,
+  .login-object,
+  .login-panel::after {
+    animation: none !important;
+  }
+
+  /* Scroll-coupled travel is exactly what the setting asks to remove; the
+     sections and bars are simply present. */
+  .passport-sections > *,
+  .grow-view {
+    animation: none !important;
+  }
+
+  /* A ring that sweeps is a size change, which is what the setting asks to
+     remove. The final arc is the element's own style, so removing the
+     animation leaves the correct value on screen. */
+  .meter-arc {
+    animation: none !important;
+  }
+
+  /* The hero holds still and the chips are simply present; the static tilt
+     stays, because a resting angle is composition, not motion. */
+  .hero-object {
+    animation: none !important;
+  }
+  .hero-chip {
+    animation: none !important;
+    transform: translateZ(46px);
+  }
+  .login-in {
+    animation: in-fade var(--duration-base) linear both !important;
+    animation-delay: 0ms !important;
+  }
+}
