@@ -1,10 +1,8 @@
 import { describe, expect, it } from 'vitest';
-
-// The storage module transitively creates the pg pool at import time, which
-// demands a connection string even though nothing here ever connects: every
-// case below is refused before the first query.
-process.env.DATABASE_URL ??= 'postgresql://test:test@localhost:5432/test';
-const { MAX_DOCUMENT_BYTES, isUuid, storeDocument } = await import('@/lib/documents/storage');
+// No DATABASE_URL needed: the pool is built on first query, and every case
+// below is refused before one is issued. This file used to set a fake
+// connection string purely to survive the import.
+import { MAX_DOCUMENT_BYTES, isUuid, storeDocument } from '@/lib/documents/storage';
 
 /**
  * The refusal surface of the document store. Everything here fails *before*
