@@ -20,14 +20,5 @@
     "db:migrate": "pnpm --filter @polytrail/web db:migrate",
     "db:seed": "pnpm --filter @polytrail/web db:seed",
     "setup": "pnpm install && pnpm db:up && pnpm db:migrate && pnpm db:seed"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "@parcel/watcher",
-      "@swc/core",
-      "esbuild",
-      "sharp",
-      "unrs-resolver"
-    ]
   }
 }

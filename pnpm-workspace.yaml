@@ -1,9 +1,25 @@
 packages:
   - 'apps/*'
   - 'packages/*'
+
+# Dependencies permitted to run their install scripts.
+#
+# pnpm 10 stopped running dependency build scripts by default — a supply-chain
+# measure, since a postinstall script is arbitrary code from a transitive
+# dependency — and pnpm exits non-zero when it blocks one. That is a warning on
+# a developer's machine, where node_modules is usually already built, and a
+# hard build failure on a clean CI checkout.
+#
+# pnpm wrote this block itself as a prompt and it was never answered: every
+# value was the literal string "set this to true or false", which is not `true`,
+# so all five stayed blocked and every clean install failed at `pnpm install`.
+#
+# All five are native-binary packages whose install step fetches or compiles the
+# binary they exist to provide. Blocked, they do not fail loudly — they silently
+# ship without their native component.
 allowBuilds:
-  '@parcel/watcher': set this to true or false
-  '@swc/core': set this to true or false
-  esbuild: set this to true or false
-  sharp: set this to true or false
-  unrs-resolver: set this to true or false
+  '@parcel/watcher': true # native file watcher
+  '@swc/core': true # the compiler Next.js builds with
+  esbuild: true # bundler behind vitest
+  sharp: true # image optimisation in next/image
+  unrs-resolver: true # native resolver used by eslint
