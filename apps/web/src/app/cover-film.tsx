@@ -172,17 +172,27 @@ export function CoverFilm({ qrSvg }: { qrSvg: string }) {
       {/* Ambient light. A warm spotlight that travels with the garment, a
           cool still one low on the right for depth, and a vignette so the
           edges fall away. */}
+      {/* No `filter: blur()` on these. A 64px blur over a 770px element,
+          one of them moving on a spring, is the single most expensive thing
+          a browser can be asked to composite; a radial gradient with a long
+          falloff looks the same and costs nothing. */}
       <motion.div
         aria-hidden
-        className="pointer-events-none absolute top-[46%] size-[48rem] -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl"
-        style={{ background: 'radial-gradient(closest-side, oklch(58% 0.166 36 / 0.3), transparent)' }}
+        className="pointer-events-none absolute top-[46%] size-[52rem] -translate-x-1/2 -translate-y-1/2 rounded-full"
+        style={{
+          background:
+            'radial-gradient(closest-side, oklch(58% 0.166 36 / 0.26) 0%, oklch(58% 0.166 36 / 0.1) 38%, oklch(58% 0.166 36 / 0.03) 60%, transparent 74%)',
+        }}
         animate={{ left: at(stage) }}
         transition={{ ...settle, stiffness: 55 }}
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute right-[-10%] bottom-[-20%] size-[40rem] rounded-full blur-3xl"
-        style={{ background: 'radial-gradient(closest-side, oklch(45% 0.13 255 / 0.18), transparent)' }}
+        className="pointer-events-none absolute right-[-10%] bottom-[-20%] size-[44rem] rounded-full"
+        style={{
+          background:
+            'radial-gradient(closest-side, oklch(45% 0.13 255 / 0.16) 0%, oklch(45% 0.13 255 / 0.05) 45%, transparent 74%)',
+        }}
       />
       <div
         aria-hidden
@@ -335,27 +345,32 @@ export function CoverFilm({ qrSvg }: { qrSvg: string }) {
                 arrival reads as a landing rather than a slide. */}
             <motion.div
               aria-hidden
-              className="absolute top-1/2 z-10 -translate-x-1/2 -translate-y-[calc(50%+3.4rem)] md:-translate-y-[calc(50%+3.9rem)]"
+              className="absolute top-1/2 z-10 -translate-x-1/2 -translate-y-[calc(50%+3.8rem)] md:-translate-y-[calc(50%+4.4rem)]"
               initial={false}
               animate={{ left: at(stage) }}
               transition={travel}
             >
+              {/* A paper plate on the dark stage. The garment is deep navy
+                  and the ground is near-black; on its own it would vanish,
+                  and a white plate is also what makes it read as the object
+                  in the film rather than another icon on the spine. */}
               <motion.div
                 key={`${cycle}-${stage}`}
                 initial={reduced ? false : { y: 0, rotate: -6 }}
                 animate={{ y: [0, -14, 0], rotate: 0 }}
                 transition={{ duration: 0.55, ease: arrive }}
-                className="relative flex size-14 items-center justify-center overflow-hidden rounded-xl border border-line-strong bg-surface shadow-xl md:size-16"
+                className="relative flex size-16 items-center justify-center overflow-hidden rounded-2xl border border-white/25 p-1.5 shadow-xl md:size-20 md:p-2"
+                style={{ background: 'linear-gradient(160deg, #ffffff 0%, oklch(93.5% 0.004 265) 100%)' }}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src="/products/coastline-half-zip-navy.svg"
                   alt=""
-                  width={48}
-                  height={60}
+                  width={64}
+                  height={80}
                   className="h-full w-auto object-contain"
                 />
-                <span className="absolute top-1.5 right-1.5 size-1.5 rounded-full bg-accent" />
+                <span className="absolute top-1.5 right-1.5 size-1.5 rounded-full bg-[oklch(51%_0.164_34)]" />
               </motion.div>
             </motion.div>
           </div>

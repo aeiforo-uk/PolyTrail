@@ -1,14 +1,93 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500" role="img">
-  <rect width="400" height="500" fill="#edf0f5"/>
-  <ellipse cx="200" cy="452" rx="118" ry="14" fill="#000" opacity="0.06"/>
-  <g fill="#31405c" stroke="#1f2b40" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500" role="img" aria-label="Coastline Half-Zip in Deep Navy">
+  <defs>
+    <linearGradient id="body" x1="0.15" y1="0" x2="0.85" y2="1">
+      <stop offset="0" stop-color="#40547a"/>
+      <stop offset="0.5" stop-color="#2c3d5c"/>
+      <stop offset="1" stop-color="#1b2740"/>
+    </linearGradient>
+    <linearGradient id="sleeve" x1="0" y1="0" x2="0.4" y2="1">
+      <stop offset="0" stop-color="#37496c"/>
+      <stop offset="1" stop-color="#1d2941"/>
+    </linearGradient>
+    <linearGradient id="collar" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2a3a58"/>
+      <stop offset="1" stop-color="#192338"/>
+    </linearGradient>
+    <linearGradient id="metal" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f2f5f9"/>
+      <stop offset="0.45" stop-color="#aab5c6"/>
+      <stop offset="1" stop-color="#5c6a80"/>
+    </linearGradient>
+    <radialGradient id="sheen" cx="0.3" cy="0.18" r="0.55">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="shade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0.75" stop-color="#000" stop-opacity="0"/>
+      <stop offset="1" stop-color="#000" stop-opacity="0.22"/>
+    </linearGradient>
+    <pattern id="rib" width="5" height="5" patternUnits="userSpaceOnUse">
+      <rect width="5" height="5" fill="#243350"/>
+      <rect width="1.6" height="5" fill="#161f33"/>
+    </pattern>
+    <pattern id="knit" width="4" height="4" patternUnits="userSpaceOnUse">
+      <rect width="4" height="2" fill="#fff" fill-opacity="0.028"/>
+    </pattern>
+    <clipPath id="torso">
+      <path d="M118 134 C138 112 166 102 200 102 C234 102 262 112 282 134 L276 214 L266 412 L134 412 L124 214 Z"/>
+    </clipPath>
+    <filter id="ground" x="-30%" y="-80%" width="160%" height="260%">
+      <feGaussianBlur stdDeviation="9"/>
+    </filter>
+  </defs>
 
-    <path d="M200 108 C184 108 172 111 162 117 L92 156 L114 236 L148 221 L146 408 Q146 418 156 418 L244 418 Q254 418 254 408 L252 221 L286 236 L308 156 L238 117 C228 111 216 108 200 108 Z"/>
-    <path d="M168 114 Q168 96 200 96 Q232 96 232 114 L232 132 Q200 146 168 132 Z"/>
-    <path d="M200 140 L200 236" fill="none" stroke="#8fa0bd" stroke-width="4" stroke-dasharray="4 3"/>
-    <rect x="194" y="236" width="12" height="16" rx="3" fill="#8fa0bd" stroke="none"/>
-    <path d="M114 236 L96 252 M286 236 L304 252" fill="none" stroke-width="2"/>
-    <path d="M152 404 L248 404 M154 396 L246 396" fill="none" stroke="#8fa0bd" stroke-width="1.5"/>
-    <path d="M96 252 L108 300 Q110 310 120 308 L138 302 M304 252 L292 300 Q290 310 280 308 L262 302" fill="none" stroke-width="2"/>
+  <!-- Contact shadow -->
+  <ellipse cx="200" cy="452" rx="122" ry="14" fill="#0a1120" opacity="0.32" filter="url(#ground)"/>
+
+  <!-- Sleeves, set in behind the torso -->
+  <path d="M128 124 L104 134 C82 152 66 214 58 302 L100 320 C110 262 112 230 126 208 Z" fill="url(#sleeve)"/>
+  <path d="M272 124 L296 134 C318 152 334 214 342 302 L300 320 C290 262 288 230 274 208 Z" fill="url(#sleeve)"/>
+  <!-- Sleeve fold shadows -->
+  <path d="M100 138 C86 170 74 230 70 296" fill="none" stroke="#111a2c" stroke-opacity="0.45" stroke-width="2"/>
+  <path d="M300 138 C314 170 326 230 330 296" fill="none" stroke="#111a2c" stroke-opacity="0.45" stroke-width="2"/>
+  <!-- Cuffs -->
+  <path d="M56 300 L102 318 L97 338 L50 320 Z" fill="url(#rib)"/>
+  <path d="M344 300 L298 318 L303 338 L350 320 Z" fill="url(#rib)"/>
+
+  <!-- Torso -->
+  <path d="M118 134 C138 112 166 102 200 102 C234 102 262 112 282 134 L276 214 L266 412 L134 412 L124 214 Z" fill="url(#body)"/>
+  <g clip-path="url(#torso)">
+    <rect width="400" height="500" fill="url(#knit)"/>
+    <rect width="400" height="500" fill="url(#sheen)"/>
+    <rect width="400" height="500" fill="url(#shade)"/>
+    <!-- Underarm shadow -->
+    <path d="M124 214 C140 200 150 196 160 200 L156 300 C144 280 134 250 124 214 Z" fill="#000" fill-opacity="0.12"/>
+    <path d="M276 214 C260 200 250 196 240 200 L244 300 C256 280 266 250 276 214 Z" fill="#000" fill-opacity="0.12"/>
   </g>
+  <!-- Armhole and side seams -->
+  <path d="M128 124 C136 160 136 190 126 210 M272 124 C264 160 264 190 274 210" fill="none" stroke="#111a2c" stroke-opacity="0.55" stroke-width="1.6"/>
+
+  <!-- Hem rib -->
+  <path d="M134 410 L266 410 L264 434 L136 434 Z" fill="url(#rib)"/>
+  <path d="M134 410 L266 410" stroke="#0f1728" stroke-opacity="0.6" stroke-width="1.5"/>
+
+  <!-- Placket -->
+  <rect x="191" y="128" width="18" height="112" rx="3" fill="#20304c"/>
+  <path d="M191 130 L191 240 M209 130 L209 240" stroke="#0f1728" stroke-opacity="0.5" stroke-width="1.2"/>
+  <!-- Zip teeth -->
+  <path d="M200 140 L200 232" fill="none" stroke="#c3ccda" stroke-width="2.6" stroke-dasharray="2.4 2.2" stroke-linecap="butt"/>
+  <!-- Slider and pull -->
+  <rect x="193.5" y="226" width="13" height="17" rx="3.5" fill="url(#metal)"/>
+  <rect x="197.5" y="240" width="5" height="15" rx="2.5" fill="url(#metal)" transform="rotate(-6 200 247)"/>
+  <circle cx="200" cy="232" r="1.6" fill="#3d4a5f"/>
+
+  <!-- Stand collar -->
+  <path d="M154 134 C160 106 240 106 246 134 L250 148 C232 136 168 136 150 148 Z" fill="url(#collar)"/>
+  <path d="M154 134 C160 106 240 106 246 134" fill="none" stroke="#5a6f96" stroke-opacity="0.45" stroke-width="1.5"/>
+  <path d="M160 130 C170 116 230 116 240 130" fill="none" stroke="#0f1728" stroke-opacity="0.55" stroke-width="1.5"/>
+  <!-- Collar rib texture -->
+  <path d="M150 148 C168 136 232 136 250 148 L247 158 C230 148 170 148 153 158 Z" fill="url(#rib)" opacity="0.85"/>
+
+  <!-- Shoulder highlight -->
+  <path d="M132 130 C150 116 172 110 196 110" fill="none" stroke="#ffffff" stroke-opacity="0.14" stroke-width="3" stroke-linecap="round"/>
 </svg>

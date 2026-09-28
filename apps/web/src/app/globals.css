@@ -1110,26 +1110,49 @@
 
   /* A slow diagonal drift across a dark ground: the twill, at the scale of a
      bolt of cloth rather than a swatch. Background-position only. */
-  .weave-ground {
-    /* Finer and fainter than a first cut. At 14px and 3.5% the lines read
-       as a pattern the eye keeps returning to; at 22px and 2% they read as
-       the grain of the ground, which is all a backdrop should be. */
-    background-image:
-      repeating-linear-gradient(
-        45deg,
-        oklch(100% 0 0 / 0.02) 0 1px,
-        transparent 1px 22px
-      ),
-      repeating-linear-gradient(
-        -45deg,
-        oklch(100% 0 0 / 0.012) 0 1px,
-        transparent 1px 22px
-      );
-    animation: weave-drift 90s linear infinite;
+  /* Two oversized pseudo-elements, each carrying one direction of the
+     weave, drifting on `transform` — which the compositor handles on the
+     GPU. The first cut animated `background-position` on the full-page
+     element, which repaints the entire viewport every frame for the whole
+     ninety-second loop and is most of why the page felt heavy. Each moves
+     exactly ten stripe periods along its own gradient line, so the loop is
+     seamless, and the 260px bleed keeps the edges covered at any size.
+
+     At 22px and 2% the lines read as the grain of the ground, which is all
+     a backdrop should be; the earlier 14px at 3.5% was a pattern the eye
+     kept returning to. */
+  .weave-ground::before,
+  .weave-ground::after {
+    content: '';
+    position: absolute;
+    inset: -260px;
+    z-index: 0;
+    pointer-events: none;
+    will-change: transform;
   }
-  @keyframes weave-drift {
-    from { background-position: 0 0, 0 0; }
-    to { background-position: 220px 220px, -220px 220px; }
+  .weave-ground::before {
+    background-image: repeating-linear-gradient(
+      45deg,
+      oklch(100% 0 0 / 0.02) 0 1px,
+      transparent 1px 22px
+    );
+    animation: weave-drift-a 90s linear infinite;
+  }
+  .weave-ground::after {
+    background-image: repeating-linear-gradient(
+      -45deg,
+      oklch(100% 0 0 / 0.012) 0 1px,
+      transparent 1px 22px
+    );
+    animation: weave-drift-b 90s linear infinite;
+  }
+  @keyframes weave-drift-a {
+    from { transform: translate3d(0, 0, 0); }
+    to { transform: translate3d(156px, -156px, 0); }
+  }
+  @keyframes weave-drift-b {
+    from { transform: translate3d(0, 0, 0); }
+    to { transform: translate3d(-156px, -156px, 0); }
   }
 
   /* ── Passport hero object ──────────────────────────────────────────────
@@ -1531,7 +1554,8 @@
   .scroll-reveal,
   .scroll-stagger > *,
   .grow-view,
-  .weave-ground {
+  .weave-ground::before,
+  .weave-ground::after {
     animation: none !important;
   }
 
