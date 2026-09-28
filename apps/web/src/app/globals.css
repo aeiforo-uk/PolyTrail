@@ -1111,22 +1111,25 @@
   /* A slow diagonal drift across a dark ground: the twill, at the scale of a
      bolt of cloth rather than a swatch. Background-position only. */
   .weave-ground {
+    /* Finer and fainter than a first cut. At 14px and 3.5% the lines read
+       as a pattern the eye keeps returning to; at 22px and 2% they read as
+       the grain of the ground, which is all a backdrop should be. */
     background-image:
       repeating-linear-gradient(
         45deg,
-        oklch(100% 0 0 / 0.035) 0 1px,
-        transparent 1px 14px
+        oklch(100% 0 0 / 0.02) 0 1px,
+        transparent 1px 22px
       ),
       repeating-linear-gradient(
         -45deg,
-        oklch(100% 0 0 / 0.02) 0 1px,
-        transparent 1px 14px
+        oklch(100% 0 0 / 0.012) 0 1px,
+        transparent 1px 22px
       );
-    animation: weave-drift 60s linear infinite;
+    animation: weave-drift 90s linear infinite;
   }
   @keyframes weave-drift {
     from { background-position: 0 0, 0 0; }
-    to { background-position: 140px 140px, -140px 140px; }
+    to { background-position: 220px 220px, -220px 220px; }
   }
 
   /* ── Passport hero object ──────────────────────────────────────────────
