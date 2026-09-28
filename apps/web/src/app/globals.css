@@ -1084,6 +1084,51 @@
     }
   }
 
+  /* ── Landing page arrivals ───────────────────────────────────────────────
+     The cover page ships no JavaScript either — the product's pitch is pages
+     that work on a phone in a shop basement, and the page making that pitch
+     should be one of them. Sections rise as they scroll into view; a group's
+     children arrive in sequence by shifting each one's scroll range a few
+     percent later than its sibling, which is a stagger with no timer.     ── */
+  @supports (animation-timeline: view()) {
+    .scroll-reveal {
+      animation: in-up var(--duration-slow) var(--ease-out-soft) both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 35%;
+    }
+    .scroll-stagger > * {
+      animation: in-up var(--duration-slow) var(--ease-out-soft) both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 30%;
+    }
+    .scroll-stagger > :nth-child(2) { animation-range: entry 6% entry 36%; }
+    .scroll-stagger > :nth-child(3) { animation-range: entry 12% entry 42%; }
+    .scroll-stagger > :nth-child(4) { animation-range: entry 18% entry 48%; }
+    .scroll-stagger > :nth-child(5) { animation-range: entry 24% entry 54%; }
+    .scroll-stagger > :nth-child(6) { animation-range: entry 30% entry 60%; }
+  }
+
+  /* A slow diagonal drift across a dark ground: the twill, at the scale of a
+     bolt of cloth rather than a swatch. Background-position only. */
+  .weave-ground {
+    background-image:
+      repeating-linear-gradient(
+        45deg,
+        oklch(100% 0 0 / 0.035) 0 1px,
+        transparent 1px 14px
+      ),
+      repeating-linear-gradient(
+        -45deg,
+        oklch(100% 0 0 / 0.02) 0 1px,
+        transparent 1px 14px
+      );
+    animation: weave-drift 60s linear infinite;
+  }
+  @keyframes weave-drift {
+    from { background-position: 0 0, 0 0; }
+    to { background-position: 140px 140px, -140px 140px; }
+  }
+
   /* ── Passport hero object ──────────────────────────────────────────────
      The garment as an object with depth rather than a flat thumbnail: a
      resting three-quarter tilt, a slow vertical drift, and two data chips
@@ -1480,7 +1525,10 @@
   /* Scroll-coupled travel is exactly what the setting asks to remove; the
      sections and bars are simply present. */
   .passport-sections > *,
-  .grow-view {
+  .scroll-reveal,
+  .scroll-stagger > *,
+  .grow-view,
+  .weave-ground {
     animation: none !important;
   }
 
