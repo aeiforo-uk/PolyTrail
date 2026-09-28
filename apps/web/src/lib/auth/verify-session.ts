@@ -24,11 +24,32 @@ export interface SessionCheck {
 }
 
 export async function verifySession(session: Session): Promise<SessionCheck> {
-  const [user] = await db
-    .select({ id: users.id, status: users.status, tenantId: users.tenantId })
-    .from(users)
-    .where(and(eq(users.id, session.userId), isNull(users.deletedAt)))
-    .limit(1);
+  /*
+   * Both lookups are issued together rather than one after the other.
+   *
+   * The tenant is addressed by `session.tenantId` — from the signed cookie —
+   * not by the tenantId on the user row, so the second query never needed the
+   * first to finish. Run serially it cost a full round trip on every console
+   * page, which is cheap next to a database in the same region and emphatically
+   * not cheap next to one on another continent.
+   *
+   * The ordering of the checks below is unchanged, so a deleted user is still
+   * reported as `user_gone` even when their workspace is also gone.
+   */
+  const [[user], [tenant]] = await Promise.all([
+    db
+      .select({ id: users.id, status: users.status, tenantId: users.tenantId })
+      .from(users)
+      .where(and(eq(users.id, session.userId), isNull(users.deletedAt)))
+      .limit(1),
+    session.tenantId
+      ? db
+          .select({ id: tenants.id, status: tenants.status })
+          .from(tenants)
+          .where(and(eq(tenants.id, session.tenantId), isNull(tenants.deletedAt)))
+          .limit(1)
+      : Promise.resolve([]),
+  ]);
 
   if (!user) return { ok: false, reason: 'user_gone' };
   if (user.status !== 'active') return { ok: false, reason: 'user_inactive' };
@@ -36,12 +57,6 @@ export async function verifySession(session: Session): Promise<SessionCheck> {
   // A platform admin has no workspace of their own, so there is nothing to
   // check beyond the account itself.
   if (!session.tenantId) return { ok: true };
-
-  const [tenant] = await db
-    .select({ id: tenants.id, status: tenants.status })
-    .from(tenants)
-    .where(and(eq(tenants.id, session.tenantId), isNull(tenants.deletedAt)))
-    .limit(1);
 
   if (!tenant) return { ok: false, reason: 'workspace_gone' };
   if (tenant.status === 'closed') return { ok: false, reason: 'workspace_closed' };

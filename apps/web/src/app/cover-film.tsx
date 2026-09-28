@@ -39,6 +39,47 @@ import { cn } from '@/lib/utils';
  * is still an honest picture of the product.
  */
 
+/**
+ * Three phases, three colours.
+ *
+ * The first cut painted all seven stages the same accent, so the film had no
+ * sense of where in a garment's life it was — every beat looked like every
+ * other beat. Colour here is doing real work: it names the phase, and the
+ * phase is the reason each actor's access differs. Making is the brand's own
+ * chain, use is the open market, end of life closes the record. Reaching for
+ * the accent, the informational woad and the critical red rather than three
+ * decorative hues keeps it inside the system's own vocabulary.
+ */
+const PHASES = {
+  making: {
+    label: 'Making',
+    text: 'text-accent',
+    border: 'border-accent',
+    ring: 'border-accent',
+    bg: 'bg-accent-soft',
+    line: 'var(--color-accent)',
+    glow: 'oklch(58% 0.166 36 / 0.26)',
+  },
+  use: {
+    label: 'In use',
+    text: 'text-info',
+    border: 'border-info',
+    ring: 'border-info',
+    bg: 'bg-info-soft',
+    line: 'var(--color-info)',
+    glow: 'oklch(45% 0.13 255 / 0.3)',
+  },
+  end: {
+    label: 'End of life',
+    text: 'text-critical',
+    border: 'border-critical',
+    ring: 'border-critical',
+    bg: 'bg-critical-soft',
+    line: 'var(--color-critical)',
+    glow: 'oklch(50% 0.16 27 / 0.26)',
+  },
+} as const;
+
 const STAGES = [
   {
     key: 'fibre',
@@ -47,6 +88,7 @@ const STAGES = [
     who: 'The grower certifies the cotton.',
     entry: 'Organic cotton, GOTS-certified',
     icon: Sprout,
+    phase: 'making',
   },
   {
     key: 'fabric',
@@ -55,6 +97,7 @@ const STAGES = [
     who: 'The mill answers a data request. No account, just a link.',
     entry: 'Knitted and dyed, wastewater tested',
     icon: Layers,
+    phase: 'making',
   },
   {
     key: 'made',
@@ -63,6 +106,7 @@ const STAGES = [
     who: 'The brand publishes. The gate refuses anything it cannot prove.',
     entry: 'Passport issued · NF78-70H8',
     icon: Factory,
+    phase: 'making',
   },
   {
     key: 'sold',
@@ -71,6 +115,7 @@ const STAGES = [
     who: 'The shopper scans the label and reads the record.',
     entry: 'First owner registered',
     icon: ShoppingBag,
+    phase: 'use',
   },
   {
     key: 'repaired',
@@ -79,6 +124,7 @@ const STAGES = [
     who: 'The repairer records the work, under their own name.',
     entry: 'Zip slider replaced, cuff re-stitched',
     icon: Hammer,
+    phase: 'use',
   },
   {
     key: 'resold',
@@ -87,6 +133,7 @@ const STAGES = [
     who: 'Ownership transfers. Both sides sign.',
     entry: 'Authenticated resale',
     icon: Repeat,
+    phase: 'use',
   },
   {
     key: 'recycled',
@@ -95,8 +142,17 @@ const STAGES = [
     who: 'The recycler closes the passport. The fibre starts again.',
     entry: 'Fibre-to-fibre. Passport closed.',
     icon: Recycle,
+    phase: 'end',
   },
-] as const;
+] as const satisfies ReadonlyArray<{
+  key: string;
+  label: string;
+  actor: string;
+  who: string;
+  entry: string;
+  icon: typeof Sprout;
+  phase: keyof typeof PHASES;
+}>;
 
 const LAST = STAGES.length - 1;
 const STEP_MS = 2800;
@@ -165,6 +221,7 @@ export function CoverFilm({ qrSvg }: { qrSvg: string }) {
   }, [stage, cycle, reduced]);
 
   const current = STAGES[stage]!;
+  const phase = PHASES[current.phase];
   const closing = stage === LAST;
 
   return (
@@ -176,15 +233,17 @@ export function CoverFilm({ qrSvg }: { qrSvg: string }) {
           one of them moving on a spring, is the single most expensive thing
           a browser can be asked to composite; a radial gradient with a long
           falloff looks the same and costs nothing. */}
+      {/* The spotlight takes the phase's colour and crossfades between them,
+          so the room warms for making, cools for use, and goes red as the
+          record closes. */}
       <motion.div
         aria-hidden
         className="pointer-events-none absolute top-[46%] size-[52rem] -translate-x-1/2 -translate-y-1/2 rounded-full"
-        style={{
-          background:
-            'radial-gradient(closest-side, oklch(58% 0.166 36 / 0.26) 0%, oklch(58% 0.166 36 / 0.1) 38%, oklch(58% 0.166 36 / 0.03) 60%, transparent 74%)',
+        animate={{
+          left: at(stage),
+          background: `radial-gradient(closest-side, ${phase.glow} 0%, transparent 72%)`,
         }}
-        animate={{ left: at(stage) }}
-        transition={{ ...settle, stiffness: 55 }}
+        transition={{ ...settle, stiffness: 55, background: { duration: 0.8 } }}
       />
       <div
         aria-hidden
@@ -253,10 +312,18 @@ export function CoverFilm({ qrSvg }: { qrSvg: string }) {
               viewBox="0 0 100 40"
               preserveAspectRatio="none"
             >
+              <defs>
+                <linearGradient id="returnArc" x1="1" y1="0" x2="0" y2="0">
+                  <stop offset="0" stopColor={PHASES.end.line} />
+                  <stop offset="1" stopColor={PHASES.making.line} />
+                </linearGradient>
+              </defs>
               <motion.path
                 d="M 100 38 C 78 -14 22 -14 0 38"
                 fill="none"
-                stroke="var(--color-accent)"
+                // Recovered fibre returning to the start: it leaves end-of-life
+                // and arrives as making, so the arc runs between those two.
+                stroke="url(#returnArc)"
                 strokeWidth={1.5}
                 strokeDasharray="4 4"
                 vectorEffect="non-scaling-stroke"
@@ -273,8 +340,15 @@ export function CoverFilm({ qrSvg }: { qrSvg: string }) {
               animate={{ scaleX: 1 }}
               transition={{ duration: 1.1, ease: arrive }}
             />
+            {/* The travelled spine carries the phases it passed through, so
+                the line itself is a record of the journey rather than a
+                progress bar. */}
             <motion.div
-              className="absolute top-1/2 left-0 h-px bg-accent"
+              className="absolute top-1/2 left-0 h-px"
+              style={{
+                backgroundImage: `linear-gradient(to right, ${PHASES.making.line} 0%, ${PHASES.making.line} 34%, ${PHASES.use.line} 48%, ${PHASES.use.line} 82%, ${PHASES.end.line} 100%)`,
+                backgroundSize: `${100 * LAST}% 100%`,
+              }}
               initial={false}
               animate={{ width: at(stage) }}
               transition={settle}
@@ -285,6 +359,7 @@ export function CoverFilm({ qrSvg }: { qrSvg: string }) {
               const done = i < stage;
               const active = i === stage;
               const Icon = s.icon;
+              const tone = PHASES[s.phase];
               return (
                 <motion.div
                   key={s.key}
@@ -301,10 +376,7 @@ export function CoverFilm({ qrSvg }: { qrSvg: string }) {
                     {active && !reduced ? (
                       <motion.span
                         aria-hidden
-                        className={cn(
-                          'absolute inset-0 rounded-full border',
-                          closing ? 'border-critical' : 'border-accent',
-                        )}
+                        className={cn('absolute inset-0 rounded-full border', tone.ring)}
                         initial={{ scale: 1, opacity: 0.8 }}
                         animate={{ scale: 2.4, opacity: 0 }}
                         transition={{ duration: 1.9, repeat: Infinity, ease: 'easeOut' }}
@@ -314,11 +386,13 @@ export function CoverFilm({ qrSvg }: { qrSvg: string }) {
                       className={cn(
                         'relative flex size-11 items-center justify-center rounded-full border md:size-13',
                         active
-                          ? closing
-                            ? 'border-critical bg-critical-soft text-critical'
-                            : 'border-accent bg-accent-soft text-accent'
+                          ? [tone.border, tone.bg, tone.text]
                           : done
-                            ? 'border-line-strong bg-surface text-ink'
+                            ? // Done reads as done: the phase's colour at
+                              // reduced strength, filled rather than outlined,
+                              // so progress is legible at a glance instead of
+                              // every passed stage looking like a pending one.
+                              ['border-line-strong bg-surface', tone.text, 'opacity-70']
                             : 'border-line bg-chrome text-ink-subtle',
                       )}
                       initial={false}
@@ -391,6 +465,13 @@ export function CoverFilm({ qrSvg }: { qrSvg: string }) {
                 exit={{ opacity: 0, y: -10, filter: 'blur(4px)' }}
                 transition={{ duration: 0.5, ease: arrive }}
               >
+                {/* The phase, named. It says what the colour means, and it
+                    fills the gap that used to sit between the spine and the
+                    stage word. */}
+                <p className={cn('eyebrow mb-3 flex items-center gap-2', phase.text)}>
+                  <span className={cn('h-px w-6', phase.bg)} style={{ background: phase.line }} />
+                  {phase.label}
+                </p>
                 <p className="display text-6xl text-ink md:text-7xl">{current.label}</p>
                 <p className="mt-3 max-w-[34ch] text-lg leading-snug text-ink-muted md:text-xl">
                   {current.who}
@@ -500,7 +581,11 @@ function PassportRecord({
         </div>
         <div className="mb-3 h-1 overflow-hidden rounded-full bg-line">
           <motion.div
-            className={cn('h-full rounded-full', closed ? 'bg-critical' : 'bg-accent')}
+            className="h-full rounded-full"
+            style={{
+              backgroundImage: `linear-gradient(to right, ${PHASES.making.line} 0%, ${PHASES.making.line} 34%, ${PHASES.use.line} 48%, ${PHASES.use.line} 82%, ${PHASES.end.line} 100%)`,
+              backgroundSize: `${(100 * STAGES.length) / Math.max(written, 1)}% 100%`,
+            }}
             initial={false}
             animate={{ width: `${(written / STAGES.length) * 100}%` }}
             transition={settle}
@@ -511,6 +596,7 @@ function PassportRecord({
             {lines.map((s, i) => {
               const Icon = s.icon;
               const latest = i === lines.length - 1;
+              const tone = PHASES[s.phase];
               return (
                 <motion.li
                   key={s.key}
@@ -523,8 +609,11 @@ function PassportRecord({
                     latest ? 'flash text-ink' : 'text-ink-muted',
                   )}
                 >
+                  {/* The line keeps its phase colour permanently, so the
+                      finished record reads as three coloured groups — the
+                      making, the use, the end — rather than seven grey rows. */}
                   <Icon
-                    className={cn('size-3.5 shrink-0', latest ? 'text-accent' : 'text-ink-subtle')}
+                    className={cn('size-3.5 shrink-0', latest ? tone.text : 'text-ink-subtle')}
                     aria-hidden
                   />
                   <span className="min-w-0 flex-1 truncate">{s.entry}</span>
